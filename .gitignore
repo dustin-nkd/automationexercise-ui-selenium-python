@@ -1,0 +1,63 @@
+# ---> Python general
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# VSCode / JetBrains / Editor configs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Pytest
+.pytest_cache/
+.cache/
+
+# Reports (Allure)
+reports/
+allure-results/
+allure-report/
+
+# Logs
+logs/
+*.log
+
+# Environment / credentials
+*.env
+.env.*
+
+# Jupyter (nếu dùng)
+.ipynb_checkpoints/
+
+# Selenium specific
+selenium-screenshots/
+screenshots/
+
+# Dependency folders
+site/
+dist/
+build/
+
+# Pycharm
+*.iml
+
+# Coverage (nếu chạy coverage test)
+htmlcov/
+.coverage
+.coverage.*
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# Python packaging (nếu bạn có build package)
+*.egg-info/
+*.egg
