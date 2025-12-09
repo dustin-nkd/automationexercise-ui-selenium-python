@@ -33,7 +33,7 @@ logs/
 *.env
 .env.*
 
-# Jupyter (nếu dùng)
+# Jupyter
 .ipynb_checkpoints/
 
 # Selenium specific
@@ -48,7 +48,7 @@ build/
 # Pycharm
 *.iml
 
-# Coverage (nếu chạy coverage test)
+# Coverage
 htmlcov/
 .coverage
 .coverage.*
@@ -58,6 +58,6 @@ htmlcov/
 *.swp
 *.swo
 
-# Python packaging (nếu bạn có build package)
+# Python packaging
 *.egg-info/
 *.egg
