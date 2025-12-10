@@ -1,0 +1,5 @@
+browser: chrome
+headless: false
+implicit_wait: 15
+remote_url: null
+base_url: "https://automationexercise.com/"
