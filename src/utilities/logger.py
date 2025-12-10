@@ -5,8 +5,6 @@ Features:
     - Ensures no duplicate handlers are added
     - Unified log formatting across the entire project
 """
-
-
 import logging
 import os
 from logging.handlers import RotatingFileHandler
