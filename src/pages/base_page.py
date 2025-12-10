@@ -1,6 +1,5 @@
 from typing import Tuple, Optional, Any
 import time
-import logging
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
@@ -14,11 +13,13 @@ from selenium.common.exceptions import (
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from src.utilities.logger import get_logger
+
 import allure
 
 Locator = Tuple[str, str] # (By.CSS_SELECTOR, "selector") or (By.XPATH, "//...")
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 class BasePage:
     """
