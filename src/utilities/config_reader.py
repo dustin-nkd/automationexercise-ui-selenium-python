@@ -17,7 +17,7 @@ logger = get_logger(__name__)
 
 
 class ConfigReader:
-    BASE_CONFIG = "src/config/config.yaml"
+    BASE_CONFIG = "src/configs/config.yaml"
     ENV_CONFIG_FOLDER = "src/configs/"
 
     def __init__(self):
