@@ -259,7 +259,7 @@ class BasePage:
             elem
         )
 
-    def navigate_to(self, url: str, timeout: Optional[int] = None) -> None:
+    def navigate_to(self, url: str) -> None:
         """
         Navigates to a URL
         """
