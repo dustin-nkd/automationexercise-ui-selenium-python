@@ -13,9 +13,9 @@ import pytest
 
 from selenium.common.exceptions import WebDriverException
 
-from src.utilities.config_reader import ConfigReader
-from src.utilities.logger import get_logger
-from src.utilities.webdriver_factory import WebDriverFactory
+from utilities.config_reader import ConfigReader
+from utilities.logger import get_logger
+from utilities.webdriver_factory import WebDriverFactory
 
 logger = get_logger(__name__)
 

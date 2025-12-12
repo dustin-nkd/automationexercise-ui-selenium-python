@@ -16,7 +16,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
-from src.utilities.logger import get_logger
+from utilities.logger import get_logger
 
 logger = get_logger(__name__)
 
