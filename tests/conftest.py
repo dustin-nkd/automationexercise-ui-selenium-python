@@ -28,7 +28,7 @@ def pytest_addoption(parser):
     )
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
-def pytest_runtest_makereport(item, _call):
+def pytest_runtest_makereport(item):
     """
     Hook that attaches the result of each test phase to the test item
     We store the report object so fixture can inspect test outcome
