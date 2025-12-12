@@ -258,3 +258,10 @@ class BasePage:
             "arguments[0].dispatchEvent(evObj);",
             elem
         )
+
+    def navigate_to(self, url: str, timeout: Optional[int] = None) -> None:
+        """
+        Navigates to a URL
+        """
+        logger.info("Navigating to URL: %s", url)
+        self.driver.get(url)
