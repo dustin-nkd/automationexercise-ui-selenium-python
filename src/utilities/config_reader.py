@@ -11,7 +11,7 @@ import yaml
 import sys
 from functools import lru_cache
 
-from src.utilities.logger import get_logger
+from utilities.logger import get_logger
 
 logger = get_logger(__name__)
 
