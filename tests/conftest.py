@@ -10,7 +10,6 @@ import os
 
 import allure
 import pytest
-
 from selenium.common.exceptions import WebDriverException
 
 from utilities.config_reader import ConfigReader
@@ -18,6 +17,7 @@ from utilities.logger import get_logger
 from utilities.webdriver_factory import WebDriverFactory
 
 logger = get_logger(__name__)
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -27,8 +27,9 @@ def pytest_addoption(parser):
         help="Environment to run tests against (overrides TEST_ENV). Example: --env=staging"
     )
 
+
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
-def pytest_runtest_makereport(item):
+def pytest_runtest_makereport(item, call):
     """
     Hook that attaches the result of each test phase to the test item
     We store the report object so fixture can inspect test outcome
@@ -37,6 +38,7 @@ def pytest_runtest_makereport(item):
     rep = outcome.get_result()
 
     setattr(item, "rep_" + rep.when, rep)
+
 
 @pytest.fixture(scope="session")
 def config(pytestconfig):
@@ -54,6 +56,7 @@ def config(pytestconfig):
 
     cfg = ConfigReader().get_config()
     return cfg
+
 
 @pytest.fixture()
 def driver(request, config):
@@ -74,26 +77,16 @@ def driver(request, config):
     # yield to test
     yield driver
 
-    try:
-        # test outcome is available on request.node
-        rep_call = getattr(request.node, "rep_call", None)
-        failed = rep_call.failed if rep_call is not None else False
+    rep_call = getattr(request.node, "rep_call", None)
 
-        if failed:
-            logger.error("Test %s failed - collecting artifacts", request.node.name)
-
-            # 1) Screenshot
-            try:
-                png = driver.get_screenshot_as_png()
-                allure.attach(png, name=f"screenshot-{request.node.name}",
-                attachment_type=allure.attachment_type.PNG)
-                logger.debug("Attached screenshot for %s", request.node.name)
-            except Exception as e:
-                logger.exception("Failed to capture screenshot: %s", e)
-    finally:
-        # Always quit the driver
+    if rep_call and rep_call.failed:
         try:
-            driver.quit()
-            logger.info("Driver quit successfully for test %s", request.node.name)
+            allure.attach(
+                driver.get_screenshot_as_png(),
+                name=f"screenshot_{request.node.name}",
+                attachment_type=allure.attachment_type.PNG,
+            )
         except Exception as e:
-            logger.exception("Error quitting driver for %s: %s", request.node.name, e)
+            print(f"Failed to capture screenshot: {e}")
+
+    driver.quit()

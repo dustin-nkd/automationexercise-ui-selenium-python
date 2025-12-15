@@ -1,24 +1,26 @@
-from typing import Tuple, Optional, Any
 import time
+from typing import Tuple, Optional, Any
 
-from selenium.webdriver.remote.webdriver import WebDriver
-from selenium.webdriver.remote.webelement import WebElement
+import allure
 from selenium.common.exceptions import (
+    NoSuchElementException,
     ElementClickInterceptedException,
     StaleElementReferenceException,
     TimeoutException,
-    WebDriverException
+    WebDriverException,
 )
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.ui import WebDriverWait
 
-from src.utilities.logger import get_logger
+from utilities.logger import get_logger
 
-import allure
-
-Locator = Tuple[str, str] # (By.CSS_SELECTOR, "selector") or (By.XPATH, "//...")
+Locator = Tuple[str, str]  # (By.CSS_SELECTOR, "selector") or (By.XPATH, "//...")
 
 logger = get_logger(__name__)
+
 
 class BasePage:
     """
@@ -170,6 +172,34 @@ class BasePage:
             logger.debug("Element %s is not present", locator)
             return False
 
+    def is_selected(self, locator: Locator, timeout: Optional[int] = None) -> bool:
+        """
+        Checks whether the element is selected
+        """
+        logger.debug("Checking if element is selected: %s", locator)
+        try:
+            elem = self.find_visible(locator, timeout)
+            selected = elem.is_selected()
+            logger.info("Element %s selected state: %s", locator, selected)
+            return selected
+        except Exception as e:
+            logger.error("Failed to check selected state for %s: %s", locator, e)
+            return False
+
+    def is_message_visible(self, locator: Locator, expected_text: str, timeout: Optional[int] = None) -> bool:
+        """
+        Verify that an element is visible and contains the expected text
+        """
+        logger.info("Verifying message '%s' is visbile", expected_text)
+        try:
+            elem = self.find_visible(locator, timeout)
+            actual_text = self.get_text(locator, timeout)
+            logger.debug("Actual message text='%s', Expected='%s'", actual_text, expected_text)
+            return expected_text in actual_text
+        except Exception as e:
+            logger.error("Message '%s' is not visible or text mismatch: %s", expected_text, e)
+            return False
+
     def scroll_into_view(self, locator: Locator, timeout: Optional[int] = None) -> None:
         """
         Scrolls the element into the viewport using JavaScript
@@ -265,3 +295,17 @@ class BasePage:
         """
         logger.info("Navigating to URL: %s", url)
         self.driver.get(url)
+
+    def select_dropdown_by_value(self, locator: Locator, value: str, timeout: Optional[int] = None) -> None:
+        """
+        Select an option from a <select> dropdown by value attribute
+        """
+        logger.info("Selecting value '%s' from dropdown", value, locator)
+        elem = self.find_visible(locator, timeout)
+        try:
+            dropdown = Select(elem)
+            dropdown.select_by_value(value)
+            logger.debug("Dropdown value '%s' selected successfully", value)
+        except NoSuchElementException:
+            logger.error("Value '%s' is not found in dropdown %s", value, locator)
+            raise

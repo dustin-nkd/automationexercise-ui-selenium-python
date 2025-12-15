@@ -7,9 +7,10 @@ Features:
     - Caches config (reads files only once)
 """
 import os
-import yaml
 import sys
 from functools import lru_cache
+
+import yaml
 
 from utilities.logger import get_logger
 

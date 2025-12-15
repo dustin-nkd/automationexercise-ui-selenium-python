@@ -16,6 +16,7 @@ LOG_FILE = "test_run.log"
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 
+
 def get_logger(name: str = None) -> logging.Logger:
     """
     Initialize and return logger
@@ -52,4 +53,3 @@ def get_logger(name: str = None) -> logging.Logger:
     logger.propagate = False
 
     return logger
-

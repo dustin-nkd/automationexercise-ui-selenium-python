@@ -1,0 +1,29 @@
+from selenium.webdriver.common.by import By
+
+from pages.base_page import BasePage
+from utilities.logger import get_logger
+
+logger = get_logger(__name__)
+
+
+class AccountCreatedPage(BasePage):
+    """
+    Page Object for AutomationExcercise Account Created Page
+    URL: https://automationpractice.com/account_created
+    """
+    LABEL_ACCOUNT_CREATED = (By.XPATH, "//b[contains(text(),'Account Created!')]")
+    BTN_CONTINUE = (By.XPATH, "//a[contains(text(),'Continue')]")
+
+    def get_account_created_message(self) -> str:
+        """
+        Get account created message
+        """
+        logger.info("Getting account created message")
+        return self.get_text(self.LABEL_ACCOUNT_CREATED)
+
+    def click_continue(self) -> None:
+        """
+        Clicks continue
+        """
+        logger.info("Clicking continue")
+        self.click(self.BTN_CONTINUE)

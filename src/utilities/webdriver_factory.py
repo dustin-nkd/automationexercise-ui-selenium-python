@@ -7,11 +7,11 @@ Features:
     - Comprehensive logging
 """
 from typing import Dict
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
-
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
@@ -30,6 +30,7 @@ class WebDriverFactory:
         remote_url: null
         implicit_wait: 5
     """
+
     def __init__(self, config: Dict) -> None:
         self.config = config
         logger.info("WebDriverFactory initalized with config: %s", config)
@@ -117,7 +118,7 @@ class WebDriverFactory:
 
         options.set_capability("browserName", browser)
 
-        driver =webdriver.Remote(
+        driver = webdriver.Remote(
             command_executor=remote_url,
             options=options
         )
