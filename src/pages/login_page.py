@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
+from pages.home_page import HomePage
 from pages.signup_page import SignUpPage
 from utilities.logger import get_logger
 
@@ -71,9 +72,10 @@ class LoginPage(BasePage):
         logger.info("Entering password: %s", password)
         self.send_keys(self.INPUT_PASSWORD, password)
 
-    def click_login(self) -> None:
+    def click_login(self) -> HomePage:
         """
         Click login button
         """
         logger.info("Clicking login button")
         self.click(self.BTN_LOGIN)
+        return HomePage(self.driver)
