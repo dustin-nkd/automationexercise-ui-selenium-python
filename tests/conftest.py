@@ -12,9 +12,11 @@ import allure
 import pytest
 from selenium.common.exceptions import WebDriverException
 
+from pages.home_page import HomePage
 from utilities.config_reader import ConfigReader
 from utilities.logger import get_logger
 from utilities.webdriver_factory import WebDriverFactory
+from utilities.user_action import register_user
 
 logger = get_logger(__name__)
 
@@ -90,3 +92,13 @@ def driver(request, config):
             print(f"Failed to capture screenshot: {e}")
 
     driver.quit()
+
+@pytest.fixture
+def registered_user(driver, config):
+    user = register_user(
+        driver=driver,
+        base_url=config["base_url"],
+        user_profile=config["user_profile"]
+    )
+
+    yield user

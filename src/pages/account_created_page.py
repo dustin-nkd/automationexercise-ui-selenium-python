@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
+from pages.home_page import HomePage
 from utilities.logger import get_logger
 
 logger = get_logger(__name__)
@@ -21,9 +22,10 @@ class AccountCreatedPage(BasePage):
         logger.info("Getting account created message")
         return self.get_text(self.LABEL_ACCOUNT_CREATED)
 
-    def click_continue(self) -> None:
+    def click_continue(self) -> HomePage:
         """
         Clicks continue
         """
         logger.info("Clicking continue")
         self.click(self.BTN_CONTINUE)
+        return HomePage(self.driver)
