@@ -4,7 +4,7 @@
     "name": "Test Case 1: Register User",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click on 'Signup / Login' button",
       "5. Verify 'New User Signup!' is visible",
@@ -28,7 +28,7 @@
     "name": "Test Case 2: Login User with correct email and password",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click on 'Signup / Login' button",
       "5. Verify 'Login to your account' is visible",
@@ -44,7 +44,7 @@
     "name": "Test Case 3: Login User with incorrect email and password",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click on 'Signup / Login' button",
       "5. Verify 'Login to your account' is visible",
@@ -58,7 +58,7 @@
     "name": "Test Case 4: Logout User",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click on 'Signup / Login' button",
       "5. Verify 'Login to your account' is visible",
@@ -74,7 +74,7 @@
     "name": "Test Case 5: Register User with existing email",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click on 'Signup / Login' button",
       "5. Verify 'New User Signup!' is visible",
@@ -88,7 +88,7 @@
     "name": "Test Case 6: Contact Us Form",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click on 'Contact Us' button",
       "5. Verify 'GET IN TOUCH' is visible",
@@ -105,7 +105,7 @@
     "name": "Test Case 7: Verify Test Cases Page",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click on 'Test Cases' button",
       "5. Verify user is navigated to test cases page successfully"
@@ -116,7 +116,7 @@
     "name": "Test Case 8: Verify All Products and product detail page",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click on 'Products' button",
       "5. Verify user is navigated to ALL PRODUCTS page successfully",
@@ -131,7 +131,7 @@
     "name": "Test Case 9: Search Product",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click on 'Products' button",
       "5. Verify user is navigated to ALL PRODUCTS page successfully",
@@ -145,7 +145,7 @@
     "name": "Test Case 10: Verify Subscription in home page",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Scroll down to footer",
       "5. Verify text 'SUBSCRIPTION'",
@@ -158,7 +158,7 @@
     "name": "Test Case 11: Verify Subscription in Cart page",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click 'Cart' button",
       "5. Scroll down to footer",
@@ -172,7 +172,7 @@
     "name": "Test Case 12: Add Products in Cart",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click 'Products' button",
       "5. Hover over first product and click 'Add to cart'",
@@ -188,7 +188,7 @@
     "name": "Test Case 13: Verify Product quantity in Cart",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click 'View Product' for any product on home page",
       "5. Verify product detail is opened",
@@ -203,7 +203,7 @@
     "name": "Test Case 14: Place Order: Register while Checkout",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Add products to cart",
       "5. Click 'Cart' button",
@@ -229,7 +229,7 @@
     "name": "Test Case 15: Place Order: Register before Checkout",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click 'Signup / Login' button",
       "5. Fill all details in Signup and create account",
@@ -253,7 +253,7 @@
     "name": "Test Case 16: Place Order: Login before Checkout",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click 'Signup / Login' button",
       "5. Fill email, password and click 'Login' button",
@@ -276,7 +276,7 @@
     "name": "Test Case 17: Remove Products From Cart",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Add products to cart",
       "5. Click 'Cart' button",
@@ -290,7 +290,7 @@
     "name": "Test Case 18: View Category Products",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that categories are visible on left side bar",
       "4. Click on 'Women' category",
       "5. Click on any category link under 'Women' category, for example: Dress",
@@ -304,7 +304,7 @@
     "name": "Test Case 19: View & Cart Brand Products",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Click on 'Products' button",
       "4. Verify that Brands are visible on left side bar",
       "5. Click on any brand name",
@@ -318,7 +318,7 @@
     "name": "Test Case 20: Search Products and Verify Cart After Login",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Click on 'Products' button",
       "4. Verify user is navigated to ALL PRODUCTS page successfully",
       "5. Enter product name in search input and click search button",
@@ -336,7 +336,7 @@
     "name": "Test Case 21: Add review on product",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Click on 'Products' button",
       "4. Verify user is navigated to ALL PRODUCTS page successfully",
       "5. Click on 'View Product' button",
@@ -351,7 +351,7 @@
     "name": "Test Case 22: Add to cart from Recommended items",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Scroll to bottom of page",
       "4. Verify 'RECOMMENDED ITEMS' are visible",
       "5. Click on 'Add To Cart' on Recommended product",
@@ -364,7 +364,7 @@
     "name": "Test Case 23: Verify address details in checkout page",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Click 'Signup / Login' button",
       "5. Fill all details in Signup and create account",
@@ -385,7 +385,7 @@
     "name": "Test Case 24: Download Invoice after purchase order",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Add products to cart",
       "5. Click 'Cart' button",
@@ -413,7 +413,7 @@
     "name": "Test Case 25: Verify Scroll Up using 'Arrow' button and Scroll Down functionality",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Scroll down page to bottom",
       "5. Verify 'SUBSCRIPTION' is visible",
@@ -426,7 +426,7 @@
     "name": "Test Case 26: Verify Scroll Up without 'Arrow' button and Scroll Down functionality",
     "steps": [
       "1. Launch browser",
-      "2. Navigate to url 'http://automationexercise.com'",
+      "2. Navigate to url 'https://automationexercise.com'",
       "3. Verify that home page is visible successfully",
       "4. Scroll down page to bottom",
       "5. Verify 'SUBSCRIPTION' is visible",

@@ -16,6 +16,10 @@ class LoginPage(BasePage):
     INPUT_NAME = (By.CSS_SELECTOR, "input[placeholder='Name']")
     INPUT_EMAIL = (By.CSS_SELECTOR, "input[data-qa='signup-email']")
     BTN_SIGNUP = (By.CSS_SELECTOR, "button[data-qa='signup-button']")
+    LABEL_LOGIN_TO_YOUR_ACCOUNT = (By.CSS_SELECTOR, "div[class='login-form'] h2")
+    INPUT_EMAIL_ADDRESS = (By.CSS_SELECTOR, "input[data-qa='login-email']")
+    INPUT_PASSWORD = (By.CSS_SELECTOR, "input[placeholder='Password']")
+    BTN_LOGIN = (By.CSS_SELECTOR, "button[data-qa='login-button']")
 
     def get_new_user_signup_message(self) -> str:
         """
@@ -31,7 +35,7 @@ class LoginPage(BasePage):
         logger.info("Entering Name: %s", name)
         self.send_keys(self.INPUT_NAME, name)
 
-    def enter_email(self, email: str) -> None:
+    def enter_signup_email(self, email: str) -> None:
         """
         Enter the email of the user
         """
@@ -45,3 +49,31 @@ class LoginPage(BasePage):
         logger.info("Clicking signup button")
         self.click(self.BTN_SIGNUP)
         return SignUpPage(self.driver)
+
+    def get_login_to_your_account_message(self) -> str:
+        """
+        Get login to your account message
+        """
+        logger.info("Getting login to your account message")
+        return self.get_text(self.LABEL_LOGIN_TO_YOUR_ACCOUNT)
+
+    def enter_login_email(self, email: str) -> None:
+        """
+        Enter the email address of the user
+        """
+        logger.info("Entering email address: %s", email)
+        self.send_keys(self.INPUT_EMAIL_ADDRESS, email)
+
+    def enter_password(self, password: str) -> None:
+        """
+        Enter the password of the user
+        """
+        logger.info("Entering password: %s", password)
+        self.send_keys(self.INPUT_PASSWORD, password)
+
+    def click_login(self) -> None:
+        """
+        Click login button
+        """
+        logger.info("Clicking login button")
+        self.click(self.BTN_LOGIN)
