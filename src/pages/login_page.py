@@ -21,6 +21,7 @@ class LoginPage(BasePage):
     INPUT_EMAIL_ADDRESS = (By.CSS_SELECTOR, "input[data-qa='login-email']")
     INPUT_PASSWORD = (By.CSS_SELECTOR, "input[placeholder='Password']")
     BTN_LOGIN = (By.CSS_SELECTOR, "button[data-qa='login-button']")
+    MESSAGE_YOUR_EMAIL_OR_PASSWORD_IS_INCORRECT = (By.XPATH, "//p[contains(text(),'Your email or password is incorrect!')]")
 
     def get_new_user_signup_message(self) -> str:
         """
@@ -79,3 +80,10 @@ class LoginPage(BasePage):
         logger.info("Clicking login button")
         self.click(self.BTN_LOGIN)
         return HomePage(self.driver)
+
+    def get_your_email_or_password_is_incorrect_message(self) -> str:
+        """
+        Get your email or password is incorrect message
+        """
+        logger.info("Getting your email or password is incorrect message")
+        return self.get_text(self.MESSAGE_YOUR_EMAIL_OR_PASSWORD_IS_INCORRECT)
