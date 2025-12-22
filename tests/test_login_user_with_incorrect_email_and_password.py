@@ -5,7 +5,7 @@ from utilities.assertions import assert_text_contains
 
 
 @allure.feature("Login")
-def test_login_user_with_incorrect_email_and_password(driver, config, registered_user):
+def test_login_user_with_incorrect_email_and_password(driver, config):
     base_url = config.get("base_url")
     guest_page = GuestPage(driver)
     user = config["test_user"]
@@ -28,7 +28,7 @@ def test_login_user_with_incorrect_email_and_password(driver, config, registered
                              driver=driver)
 
     with allure.step("Enter incorrect email address and password"):
-        login_page.enter_login_email(registered_user["email"])
+        login_page.enter_login_email(user["invalid_user"])
         login_page.enter_password(user["invalid_password"])
 
     with allure.step("Click 'login' button"):

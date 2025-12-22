@@ -5,6 +5,7 @@ remote_url: null
 base_url: "https://automationexercise.com"
 
 test_user:
+  invalid_user: "invalid_user@test.com"
   invalid_password: "invalid_password"
 
 user_profile:
