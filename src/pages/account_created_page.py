@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
-from pages.home_page import HomePage
 from utilities.logger import get_logger
 
 logger = get_logger(__name__)
@@ -12,7 +11,8 @@ class AccountCreatedPage(BasePage):
     Page Object for AutomationExcercise Account Created Page
     URL: https://automationpractice.com/account_created
     """
-    LABEL_ACCOUNT_CREATED = (By.XPATH, "//b[contains(text(),'Account Created!')]")
+
+    LBL_ACCOUNT_CREATED = (By.XPATH, "//b[contains(text(),'Account Created!')]")
     BTN_CONTINUE = (By.XPATH, "//a[contains(text(),'Continue')]")
 
     def get_account_created_message(self) -> str:
@@ -20,12 +20,14 @@ class AccountCreatedPage(BasePage):
         Get account created message
         """
         logger.info("Getting account created message")
-        return self.get_text(self.LABEL_ACCOUNT_CREATED)
+        return self.get_text(self.LBL_ACCOUNT_CREATED)
 
-    def click_continue(self) -> HomePage:
+    def click_continue(self):
         """
         Clicks continue
         """
         logger.info("Clicking continue")
         self.click(self.BTN_CONTINUE)
+
+        from pages.home_page import HomePage
         return HomePage(self.driver)
