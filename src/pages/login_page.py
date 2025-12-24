@@ -21,6 +21,7 @@ class LoginPage(BasePage):
     INPUT_PASSWORD = (By.CSS_SELECTOR, "input[placeholder='Password']")
     BTN_LOGIN = (By.CSS_SELECTOR, "button[data-qa='login-button']")
     MSG_LOGIN_ERROR = (By.XPATH, "//p[contains(text(),'Your email or password is incorrect!')]")
+    MSG_SIGNUP_ERROR = (By.XPATH, "//p[normalize-space()='Email Address already exist!']")
 
     def get_new_user_signup_message(self) -> str:
         """
@@ -90,3 +91,10 @@ class LoginPage(BasePage):
         """
         logger.info("Getting your email or password is incorrect message")
         return self.get_text(self.MSG_LOGIN_ERROR)
+
+    def get_email_address_already_exist_message(self) -> str:
+        """
+        Get email address already exist message
+        """
+        logger.info("Getting email address already exist message")
+        return self.get_text(self.MSG_SIGNUP_ERROR)
