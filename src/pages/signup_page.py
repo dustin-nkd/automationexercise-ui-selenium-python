@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
 
-from pages.account_created_page import AccountCreatedPage
 from pages.base_page import BasePage
 from utilities.logger import get_logger
 
@@ -12,22 +11,23 @@ class SignUpPage(BasePage):
     Page Object for AutomationExcercise Sign Up and Login Page
     URL: https://automationpractice.com/signup
     """
-    LABEL_ENTER_ACCOUNT_INFORMATION = (By.XPATH, "//b[normalize-space()='Enter Account Information']")
-    RADIO_BTN_MR = (By.XPATH, "//input[@id='id_gender1']")
-    RADIO_BTN_MRS = (By.XPATH, "//input[@id='id_gender2']")
+
+    LBL_ENTER_ACCOUNT_INFORMATION = (By.XPATH, "//b[normalize-space()='Enter Account Information']")
+    RAD_MR = (By.XPATH, "//input[@id='id_gender1']")
+    RAD_MRS = (By.XPATH, "//input[@id='id_gender2']")
     INPUT_NAME = (By.XPATH, "//input[@id='name']")
     INPUT_PASSWORD = (By.XPATH, "//input[@id='password']")
-    DROPDOWN_DAY_OF_BIRTH = (By.XPATH, "//select[@id='days']")
-    DROPDOWN_MONTH_OF_BIRTH = (By.XPATH, "//select[@id='months']")
-    DROPDOWN_YEAR_OF_BIRTH = (By.XPATH, "//select[@id='years']")
-    CHECKBOX_NEWSLETTER = (By.XPATH, "//input[@id='newsletter']")
-    CHECKBOX_OFFERS = (By.XPATH, "//input[@id='optin']")
+    DDL_DAY_OF_BIRTH = (By.XPATH, "//select[@id='days']")
+    DDL_MONTH_OF_BIRTH = (By.XPATH, "//select[@id='months']")
+    DDL_YEAR_OF_BIRTH = (By.XPATH, "//select[@id='years']")
+    CHK_NEWSLETTER = (By.XPATH, "//input[@id='newsletter']")
+    CHK_OFFERS = (By.XPATH, "//input[@id='optin']")
     INPUT_FIRST_NAME = (By.XPATH, "//input[@id='first_name']")
     INPUT_LAST_NAME = (By.XPATH, "//input[@id='last_name']")
     INPUT_COMPANY = (By.XPATH, "//input[@id='company']")
     INPUT_ADDRESS = (By.XPATH, "//input[@id='address1']")
     INPUT_ADDRESS2 = (By.XPATH, "//input[@id='address2']")
-    DROPDOWN_COUNTRY = (By.XPATH, "//select[@id='country']")
+    DDL_COUNTRY = (By.XPATH, "//select[@id='country']")
     INPUT_STATE = (By.XPATH, "//input[@id='state']")
     INPUT_CITY = (By.XPATH, "//input[@id='city']")
     INPUT_ZIPCODE = (By.XPATH, "//input[@id='zipcode']")
@@ -39,7 +39,7 @@ class SignUpPage(BasePage):
         Get enter account information message
         """
         logger.info("Getting enter account information message")
-        return self.get_text(self.LABEL_ENTER_ACCOUNT_INFORMATION)
+        return self.get_text(self.LBL_ENTER_ACCOUNT_INFORMATION)
 
     def select_title(self, title: str) -> None:
         """
@@ -47,9 +47,9 @@ class SignUpPage(BasePage):
         """
         logger.info("Selecting title")
         if title.lower() == "mr":
-            self.click(self.RADIO_BTN_MR)
+            self.click(self.RAD_MR)
         elif title.lower() == "mrs":
-            self.click(self.RADIO_BTN_MRS)
+            self.click(self.RAD_MRS)
 
     def enter_name(self, name: str) -> None:
         """
@@ -70,37 +70,37 @@ class SignUpPage(BasePage):
         Selects day of birth
         """
         logger.info("Selecting day of birth")
-        self.select_dropdown_by_value(self.DROPDOWN_DAY_OF_BIRTH, day)
+        self.select_dropdown_by_value(self.DDL_DAY_OF_BIRTH, day)
 
     def select_month_of_birth(self, month: str) -> None:
         """
         Selects month of birth
         """
         logger.info("Selecting month of birth")
-        self.select_dropdown_by_value(self.DROPDOWN_MONTH_OF_BIRTH, month)
+        self.select_dropdown_by_value(self.DDL_MONTH_OF_BIRTH, month)
 
     def select_year_of_birth(self, year: str) -> None:
         """
         Selects year of birth
         """
         logger.info("Selecting year of birth")
-        self.select_dropdown_by_value(self.DROPDOWN_YEAR_OF_BIRTH, year)
+        self.select_dropdown_by_value(self.DDL_YEAR_OF_BIRTH, year)
 
     def select_newsletter(self) -> None:
         """
         Selects newsletter
         """
         logger.info("Selecting newsletter")
-        if not self.is_selected(self.CHECKBOX_NEWSLETTER):
-            self.click(self.CHECKBOX_NEWSLETTER)
+        if not self.is_selected(self.CHK_NEWSLETTER):
+            self.click(self.CHK_NEWSLETTER)
 
     def select_offers(self) -> None:
         """
         Selects offers
         """
         logger.info("Selecting offers")
-        if not self.is_selected(self.CHECKBOX_OFFERS):
-            self.click(self.CHECKBOX_OFFERS)
+        if not self.is_selected(self.CHK_OFFERS):
+            self.click(self.CHK_OFFERS)
 
     def enter_first_name(self, first_name: str) -> None:
         """
@@ -142,7 +142,7 @@ class SignUpPage(BasePage):
         Selects country
         """
         logger.info("Selecting country")
-        self.select_dropdown_by_value(self.DROPDOWN_COUNTRY, country)
+        self.select_dropdown_by_value(self.DDL_COUNTRY, country)
 
     def enter_state(self, state: str) -> None:
         """
@@ -172,10 +172,12 @@ class SignUpPage(BasePage):
         logger.info("Entering mobile number")
         self.send_keys(self.INPUT_MOBILE_NUMBER, mobile_number)
 
-    def click_create_account(self) -> AccountCreatedPage:
+    def click_create_account(self):
         """
         Clicks create account
         """
         logger.info("Clicking create account")
         self.click(self.BTN_CREATE_ACCOUNT)
+
+        from pages.account_created_page import AccountCreatedPage
         return AccountCreatedPage(self.driver)
