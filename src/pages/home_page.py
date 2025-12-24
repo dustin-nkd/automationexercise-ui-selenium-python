@@ -39,9 +39,11 @@ class HomePage(BasePage):
         self.click(self.BTN_DELETE_ACCOUNT)
         return AccountDeletedPage(self.driver)
 
-    def click_logout(self) -> None:
+    def click_logout(self):
         """
         Click Logout
         """
         logger.info("Clicking Logout")
         self.click(self.BTN_LOGOUT)
+        from pages.login_page import LoginPage
+        return LoginPage(self.driver)
