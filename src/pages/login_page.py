@@ -8,20 +8,25 @@ logger = get_logger(__name__)
 
 class LoginPage(BasePage):
     """
-    Page Object for AutomationExcercise Sign Up and Login Page
+    Page Object for AutomationExcercise Login / Sign Up Page
     URL: https://automationpractice.com/login
     """
 
+    # ---------- Signup section ----------
     LBL_NEW_USER_SIGNUP = (By.CSS_SELECTOR, "div[class='signup-form'] h2")
-    INPUT_NAME = (By.CSS_SELECTOR, "input[placeholder='Name']")
-    INPUT_EMAIL = (By.CSS_SELECTOR, "input[data-qa='signup-email']")
+    INPUT_SIGNUP_NAME = (By.CSS_SELECTOR, "input[placeholder='Name']")
+    INPUT_SIGNUP_EMAIL = (By.CSS_SELECTOR, "input[data-qa='signup-email']")
     BTN_SIGNUP = (By.CSS_SELECTOR, "button[data-qa='signup-button']")
+    MSG_SIGNUP_ERROR = (By.XPATH, "//p[normalize-space()='Email Address already exist!']")
+
+    # ---------- Login section ----------
     LBL_LOGIN_TO_YOUR_ACCOUNT = (By.CSS_SELECTOR, "div[class='login-form'] h2")
-    INPUT_EMAIL_ADDRESS = (By.CSS_SELECTOR, "input[data-qa='login-email']")
+    INPUT_LOGIN_EMAIL = (By.CSS_SELECTOR, "input[data-qa='login-email']")
     INPUT_PASSWORD = (By.CSS_SELECTOR, "input[placeholder='Password']")
     BTN_LOGIN = (By.CSS_SELECTOR, "button[data-qa='login-button']")
-    MSG_LOGIN_ERROR = (By.XPATH, "//p[contains(text(),'Your email or password is incorrect!')]")
-    MSG_SIGNUP_ERROR = (By.XPATH, "//p[normalize-space()='Email Address already exist!']")
+    MSG_LOGIN_ERROR = (By.XPATH, "//p[normalize-space()='Your email or password is incorrect!']")
+
+    # ---------- Signup actions ----------
 
     def get_new_user_signup_message(self) -> str:
         """
@@ -35,14 +40,14 @@ class LoginPage(BasePage):
         Enter the name of the user
         """
         logger.info("Entering Name: %s", name)
-        self.send_keys(self.INPUT_NAME, name)
+        self.send_keys(self.INPUT_SIGNUP_NAME, name)
 
     def enter_signup_email(self, email: str) -> None:
         """
         Enter the email of the user
         """
         logger.info("Entering Email: %s", email)
-        self.send_keys(self.INPUT_EMAIL, email)
+        self.send_keys(self.INPUT_SIGNUP_EMAIL, email)
 
     def click_signup(self):
         """
@@ -53,6 +58,15 @@ class LoginPage(BasePage):
 
         from pages.signup_page import SignUpPage
         return SignUpPage(self.driver)
+
+    def get_email_address_already_exist_message(self) -> str:
+        """
+        Get email address already exist message
+        """
+        logger.info("Getting email address already exist message")
+        return self.get_text(self.MSG_SIGNUP_ERROR)
+
+    # ---------- Login actions ----------
 
     def get_login_to_your_account_message(self) -> str:
         """
@@ -66,7 +80,7 @@ class LoginPage(BasePage):
         Enter the email address of the user
         """
         logger.info("Entering email address: %s", email)
-        self.send_keys(self.INPUT_EMAIL_ADDRESS, email)
+        self.send_keys(self.INPUT_LOGIN_EMAIL, email)
 
     def enter_password(self, password: str) -> None:
         """
@@ -91,10 +105,3 @@ class LoginPage(BasePage):
         """
         logger.info("Getting your email or password is incorrect message")
         return self.get_text(self.MSG_LOGIN_ERROR)
-
-    def get_email_address_already_exist_message(self) -> str:
-        """
-        Get email address already exist message
-        """
-        logger.info("Getting email address already exist message")
-        return self.get_text(self.MSG_SIGNUP_ERROR)

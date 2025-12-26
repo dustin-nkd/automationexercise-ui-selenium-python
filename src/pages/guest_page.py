@@ -1,5 +1,3 @@
-from selenium.webdriver.common.by import By
-
 from pages.base_page import BasePage
 from utilities.logger import get_logger
 
@@ -12,16 +10,13 @@ class GuestPage(BasePage):
     URL: https://automationpractice.com
     """
 
-    BTN_SIGNUP_LOGIN = (By.CSS_SELECTOR, "a[href='/login']")
-    HDR_MAIN = (By.CSS_SELECTOR, ".header-middle")
-
     def navigate_to_signup_login_page(self):
         """
         Navigate from Home Page to Signup / Login Page
-        :return: LoginPage object
+        :return: LoginPage
         """
-        logger.info("Navigating to Signup / Login Page")
-        self.click(self.BTN_SIGNUP_LOGIN)
+        logger.info("Navigating to Signup / Login Page via header")
+        self.header.click_signup_login()
 
         from pages.login_page import LoginPage
         return LoginPage(self.driver)
@@ -30,5 +25,5 @@ class GuestPage(BasePage):
         """
         Verify that the Home Page is displayed successfully
         """
-        logger.info("Verifying Home Page is visible")
-        return self.is_displayed(self.HDR_MAIN)
+        logger.info("Verifying Home Page is visible via header")
+        return self.header.is_header_visible()

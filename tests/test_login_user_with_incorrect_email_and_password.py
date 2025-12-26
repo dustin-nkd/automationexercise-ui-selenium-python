@@ -21,7 +21,6 @@ def test_login_user_with_incorrect_email_and_password(driver, config):
 
     with allure.step("Verify 'Login to your account' is visible"):
         actual_text = login_page.get_login_to_your_account_message()
-
         assert_text_contains(actual_text=actual_text,
                              expected_text="Login to your account",
                              message="Login to your account is not visible",
@@ -36,7 +35,6 @@ def test_login_user_with_incorrect_email_and_password(driver, config):
 
     with allure.step("Verify error 'Your email or password is incorrect!' is visible"):
         actual_text = login_page.get_your_email_or_password_is_incorrect_message()
-
         assert_text_contains(actual_text=actual_text,
                              expected_text="Your email or password is incorrect!",
                              message="Your email or password is incorrect is not visible!",

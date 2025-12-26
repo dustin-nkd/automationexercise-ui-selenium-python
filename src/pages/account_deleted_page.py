@@ -12,7 +12,7 @@ class AccountDeletedPage(BasePage):
     URL: https://automationpractice.com/delete_account
     """
 
-    LBL_ACCOUNT_DELETED = (By.XPATH, "//b[contains(text(),'Account Deleted!')]")
+    LBL_ACCOUNT_DELETED = (By.XPATH, "//b[normalize-space()='Account Deleted!']")
     BTN_CONTINUE = (By.XPATH, "//a[@data-qa='continue-button']")
 
     def get_account_deleted_message(self) -> str:

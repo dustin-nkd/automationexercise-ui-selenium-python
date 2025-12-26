@@ -12,8 +12,8 @@ class AccountCreatedPage(BasePage):
     URL: https://automationpractice.com/account_created
     """
 
-    LBL_ACCOUNT_CREATED = (By.XPATH, "//b[contains(text(),'Account Created!')]")
-    BTN_CONTINUE = (By.XPATH, "//a[contains(text(),'Continue')]")
+    LBL_ACCOUNT_CREATED = (By.XPATH, "//b[normalize-space()='Account Created!']")
+    BTN_CONTINUE = (By.XPATH, "//a[normalize-space()='Continue']")
 
     def get_account_created_message(self) -> str:
         """

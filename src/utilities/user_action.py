@@ -21,9 +21,7 @@ def register_user(driver, base_url, user_profile):
     signup_page.enter_password(password)
 
     dob = user_profile["date_of_birth"]
-    signup_page.select_day_of_birth(dob["day"])
-    signup_page.select_month_of_birth(dob["month"])
-    signup_page.select_year_of_birth(dob["year"])
+    signup_page.select_date_of_birth(dob["day"], dob["month"], dob["year"])
 
     personal = user_profile["personal_info"]
     signup_page.enter_first_name(personal["first_name"])
@@ -44,7 +42,7 @@ def register_user(driver, base_url, user_profile):
     account_created_page = signup_page.click_create_account()
 
     home_page = account_created_page.click_continue()
-    home_page.click_logout()
+    home_page.logout()
 
     return {
         "email": email,
