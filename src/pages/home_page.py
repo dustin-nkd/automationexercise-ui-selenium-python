@@ -1,5 +1,3 @@
-from selenium.webdriver.common.by import By
-
 from pages.base_page import BasePage
 from utilities.logger import get_logger
 
@@ -12,40 +10,36 @@ class HomePage(BasePage):
     URL: https://automationpractice.com
     """
 
-    HDR_HOME_PAGE = (By.CSS_SELECTOR, ".header-middle")
-    LBL_LOGGED_USER = (By.XPATH, "//li[a[contains(., 'Logged in as')]]")
-    BTN_DELETE_ACCOUNT = (By.CSS_SELECTOR, "a[href='/delete_account']")
-    BTN_LOGOUT = (By.CSS_SELECTOR, "a[href='/logout']")
-
     def is_home_page_visible(self) -> bool:
         """
         Verify that the Home Page is displayed successfully
         """
         logger.info("Verifying Home Page is visible")
-        return self.is_displayed(self.HDR_HOME_PAGE)
+        return self.header.is_header_visible()
 
     def is_logged_user_visible(self) -> bool:
         """
         Verify that the page logged user is displayed successfully
         """
         logger.info("Verifying logged user is visible")
-        return self.is_displayed(self.LBL_LOGGED_USER)
+        return self.header.is_logged_user_visible()
 
-    def click_delete_account(self):
+    def delete_account(self):
         """
-        Click Delete Account
+        Delete account and navigate to AccountDeletePage
         """
-        logger.info("Clicking Delete Account")
-        self.click(self.BTN_DELETE_ACCOUNT)
+        logger.info("Deleting account via header")
+        self.header.click_delete_account()
 
         from pages.account_deleted_page import AccountDeletedPage
         return AccountDeletedPage(self.driver)
 
-    def click_logout(self):
+    def logout(self):
         """
-        Click Logout
+        Logout user and navigate to LoginPage
         """
-        logger.info("Clicking Logout")
-        self.click(self.BTN_LOGOUT)
+        logger.info("Logging out via header")
+        self.header.click_logout()
+
         from pages.login_page import LoginPage
         return LoginPage(self.driver)

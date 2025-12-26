@@ -13,15 +13,25 @@ class SignUpPage(BasePage):
     """
 
     LBL_ENTER_ACCOUNT_INFORMATION = (By.XPATH, "//b[normalize-space()='Enter Account Information']")
-    RAD_MR = (By.XPATH, "//input[@id='id_gender1']")
-    RAD_MRS = (By.XPATH, "//input[@id='id_gender2']")
+
+    # ---------- Title ----------
+    RAD_TITLE_MR = (By.XPATH, "//input[@id='id_gender1']")
+    RAD_TITLE_MRS = (By.XPATH, "//input[@id='id_gender2']")
+
+    # ---------- Account ----------
     INPUT_NAME = (By.XPATH, "//input[@id='name']")
     INPUT_PASSWORD = (By.XPATH, "//input[@id='password']")
-    DDL_DAY_OF_BIRTH = (By.XPATH, "//select[@id='days']")
-    DDL_MONTH_OF_BIRTH = (By.XPATH, "//select[@id='months']")
-    DDL_YEAR_OF_BIRTH = (By.XPATH, "//select[@id='years']")
+
+    # ---------- Date of Birth ----------
+    DDL_DAY = (By.XPATH, "//select[@id='days']")
+    DDL_MONTH = (By.XPATH, "//select[@id='months']")
+    DDL_YEAR = (By.XPATH, "//select[@id='years']")
+
+    # ---------- Preferences ----------
     CHK_NEWSLETTER = (By.XPATH, "//input[@id='newsletter']")
     CHK_OFFERS = (By.XPATH, "//input[@id='optin']")
+
+    # ---------- Address ----------
     INPUT_FIRST_NAME = (By.XPATH, "//input[@id='first_name']")
     INPUT_LAST_NAME = (By.XPATH, "//input[@id='last_name']")
     INPUT_COMPANY = (By.XPATH, "//input[@id='company']")
@@ -32,7 +42,10 @@ class SignUpPage(BasePage):
     INPUT_CITY = (By.XPATH, "//input[@id='city']")
     INPUT_ZIPCODE = (By.XPATH, "//input[@id='zipcode']")
     INPUT_MOBILE_NUMBER = (By.XPATH, "//input[@id='mobile_number']")
+
     BTN_CREATE_ACCOUNT = (By.XPATH, "//button[contains(text(),'Create Account')]")
+
+    # ---------- Verification ----------
 
     def get_enter_account_information_message(self) -> str:
         """
@@ -41,15 +54,19 @@ class SignUpPage(BasePage):
         logger.info("Getting enter account information message")
         return self.get_text(self.LBL_ENTER_ACCOUNT_INFORMATION)
 
+    # ---------- Actions ----------
+
     def select_title(self, title: str) -> None:
         """
         Selects title
         """
         logger.info("Selecting title")
         if title.lower() == "mr":
-            self.click(self.RAD_MR)
+            self.click(self.RAD_TITLE_MR)
         elif title.lower() == "mrs":
-            self.click(self.RAD_MRS)
+            self.click(self.RAD_TITLE_MRS)
+        else:
+            raise ValueError(f"Invalid title: {title}")
 
     def enter_name(self, name: str) -> None:
         """
@@ -65,26 +82,14 @@ class SignUpPage(BasePage):
         logger.info("Entering password")
         self.send_keys(self.INPUT_PASSWORD, password)
 
-    def select_day_of_birth(self, day: str) -> None:
+    def select_date_of_birth(self, day: str, month: str, year: str) -> None:
         """
-        Selects day of birth
+        Selects date of birth
         """
-        logger.info("Selecting day of birth")
-        self.select_dropdown_by_value(self.DDL_DAY_OF_BIRTH, day)
-
-    def select_month_of_birth(self, month: str) -> None:
-        """
-        Selects month of birth
-        """
-        logger.info("Selecting month of birth")
-        self.select_dropdown_by_value(self.DDL_MONTH_OF_BIRTH, month)
-
-    def select_year_of_birth(self, year: str) -> None:
-        """
-        Selects year of birth
-        """
-        logger.info("Selecting year of birth")
-        self.select_dropdown_by_value(self.DDL_YEAR_OF_BIRTH, year)
+        logger.info("Selecting date of birth")
+        self.select_dropdown_by_value(self.DDL_DAY, day)
+        self.select_dropdown_by_value(self.DDL_MONTH, month)
+        self.select_dropdown_by_value(self.DDL_YEAR, year)
 
     def select_newsletter(self) -> None:
         """

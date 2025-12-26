@@ -20,7 +20,6 @@ def test_logout_user(driver, config, registered_user):
 
     with allure.step("Verify 'Login to your account' is visible"):
         actual_text = login_page.get_login_to_your_account_message()
-
         assert_text_contains(actual_text=actual_text,
                              expected_text="Login to your account",
                              message="Login to your account is not visible",
@@ -37,11 +36,10 @@ def test_logout_user(driver, config, registered_user):
         assert home_page.is_logged_user_visible()
 
     with allure.step("Click 'Logout' button"):
-        login_page = home_page.click_logout()
+        login_page = home_page.logout()
 
     with allure.step("Verify that user is navigated to login page"):
         actual_text = login_page.get_login_to_your_account_message()
-
         assert_text_contains(actual_text=actual_text,
                              expected_text="Login to your account",
                              message="User is not navigated to Login page after logout",

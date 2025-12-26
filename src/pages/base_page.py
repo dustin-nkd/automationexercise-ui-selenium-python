@@ -15,6 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 
+from components.header_component import HeaderComponent
 from utilities.logger import get_logger
 
 Locator = Tuple[str, str]  # (By.CSS_SELECTOR, "selector") or (By.XPATH, "//...")
@@ -37,6 +38,7 @@ class BasePage:
         :param timeout: default wait timeout (seconds)
         """
         self.driver = driver
+        self.header = HeaderComponent(self)
         self.timeout = timeout or self.DEFAULT_TIMEOUT
         logger.debug("BasePage initialized with timeout=%s", self.timeout)
 

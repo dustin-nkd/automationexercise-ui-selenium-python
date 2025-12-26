@@ -20,7 +20,6 @@ def test_login_user_with_correct_email_and_password(driver, config, registered_u
 
     with allure.step("Verify 'Login to your account' is visible"):
         actual_text = login_page.get_login_to_your_account_message()
-
         assert_text_contains(actual_text=actual_text,
                              expected_text="Login to your account",
                              message="Login to your account is not visible",
@@ -37,11 +36,10 @@ def test_login_user_with_correct_email_and_password(driver, config, registered_u
         assert home_page.is_logged_user_visible()
 
     with allure.step("Click 'Delete Account' button"):
-        account_deleted_page = home_page.click_delete_account()
+        account_deleted_page = home_page.delete_account()
 
     with allure.step("Verify that 'ACCOUNT DELETED!' is visible"):
         actual_text = account_deleted_page.get_account_deleted_message()
-
         assert_text_contains(actual_text=actual_text,
                              expected_text="ACCOUNT DELETED!",
                              message="ACCOUNT DELETED! is not visible",
