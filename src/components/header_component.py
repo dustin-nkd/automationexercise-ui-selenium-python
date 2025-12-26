@@ -15,6 +15,7 @@ class HeaderComponent:
     BTN_SIGNUP_LOGIN = (By.CSS_SELECTOR, "a[href='/login']")
     BTN_LOGOUT = (By.CSS_SELECTOR, "a[href='/logout']")
     BTN_DELETE_ACCOUNT = (By.CSS_SELECTOR, "a[href='/delete_account']")
+    BTN_CONTACT_US = (By.CSS_SELECTOR, "a[href='/contact_us']")
 
     LBL_LOGGED_USER = (By.XPATH, "//li[a[contains(., 'Logged in as')]]")
 
@@ -59,3 +60,10 @@ class HeaderComponent:
         """
         logger.info("Clicking to Delete Account")
         self.base.click(self.BTN_DELETE_ACCOUNT)
+
+    def click_contact_us(self) -> None:
+        """
+        Click to contact us
+        """
+        logger.info("Clicking to Contact Us")
+        self.base.click(self.BTN_CONTACT_US)

@@ -1,4 +1,5 @@
 import time
+from pathlib import Path
 from typing import Tuple, Optional, Any
 
 import allure
@@ -9,6 +10,7 @@ from selenium.common.exceptions import (
     TimeoutException,
     WebDriverException,
 )
+from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
@@ -311,3 +313,44 @@ class BasePage:
         except NoSuchElementException:
             logger.error("Value '%s' is not found in dropdown %s", value, locator)
             raise
+
+    def upload_file(self, locator: Locator, file_path: str, timeout: Optional[int] = None) -> None:
+        """
+        Upload file using input[type=file]
+        """
+        absolute_path = str(Path(file_path).resolve())
+        self.send_keys(locator, absolute_path)
+
+    def wait_for_alert(self, timeout: Optional[int] = None) -> Alert:
+        """
+        Wait until alert is present
+        """
+        try:
+            return self._wait_for(EC.alert_is_present(), timeout)
+        except TimeoutException:
+            raise AssertionError("Expected alert to be present, but it was not shown")
+
+    def accept_alert(self, timeout: Optional[int] = None) -> None:
+        """
+        Accept (OK) browser alert
+        """
+        alert = self.wait_for_alert()
+        alert_text = alert.text
+        alert.accept()
+        logger.info("Accepted alert with text: %s", alert_text)
+
+    def dismiss_alert(self, timeout: Optional[int] = None) -> None:
+        """
+        Dismiss (Cancel) browser alert
+        """
+        alert = self.wait_for_alert()
+        alert_text = alert.text
+        alert.dismiss()
+        logger.info("Dismissed alert with text: %s", alert_text)
+
+    def get_aler_text(self, timeout: Optional[int] = None) -> str:
+        """
+        Get alert text
+        """
+        alert = self.wait_for_alert()
+        return alert.text
