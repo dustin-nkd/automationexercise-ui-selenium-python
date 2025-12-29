@@ -43,6 +43,17 @@ class GuestPage(BasePage):
         from pages.test_cases_page import TestCasesPage
         return TestCasesPage(self.driver)
 
+    def navigate_to_products_page(self):
+        """
+        Navigate to Products Page
+        :return: ProductsPage
+        """
+        logger.info("Navigating to Products Page via header")
+        self.header.click_products()
+
+        from pages.products_page import ProductsPage
+        return ProductsPage(self.driver)
+
     def is_home_page_visible(self) -> bool:
         """
         Verify that the Home Page is displayed successfully
