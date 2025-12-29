@@ -10,6 +10,8 @@ class HomePage(BasePage):
     URL: https://automationpractice.com
     """
 
+    # ---------- Verifications ----------
+
     def is_home_page_visible(self) -> bool:
         """
         Verify that the Home Page is displayed successfully
@@ -23,6 +25,8 @@ class HomePage(BasePage):
         """
         logger.info("Verifying logged user is visible")
         return self.header.is_logged_user_visible()
+
+    # ---------- Actions / Navigation ----------
 
     def delete_account(self):
         """

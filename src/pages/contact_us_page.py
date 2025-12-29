@@ -25,12 +25,23 @@ class ContactUsPage(BasePage):
     MSG_SUCCESS_SUBMITTED = (By.XPATH, "//div[@class='status alert alert-success']")
     BTN_HOME = (By.CSS_SELECTOR, ".btn.btn-success")
 
+    # ---------- Getters ----------
+
     def get_get_in_touch_message(self) -> str:
         """
         Get In Touch
         """
         logger.info("Getting get in touch message")
         return self.get_text(self.LBL_GET_IN_TOUCH)
+
+    def get_success_submitted_message(self) -> str:
+        """
+        Get Success! Your details have been submitted successfully message
+        """
+        logger.info("Getting Success! Your details have been submitted successfully message")
+        return self.get_text(self.MSG_SUCCESS_SUBMITTED)
+
+    # ---------- Actions ----------
 
     def enter_name(self, name: str) -> None:
         """
@@ -74,12 +85,7 @@ class ContactUsPage(BasePage):
         logger.info("Clicking submit button")
         self.click(self.BTN_SUBMIT)
 
-    def get_success_submitted_message(self) -> str:
-        """
-        Get Success! Your details have been submitted successfully message
-        """
-        logger.info("Getting Success! Your details have been submitted successfully message")
-        return self.get_text(self.MSG_SUCCESS_SUBMITTED)
+    # ---------- Navigation ----------
 
     def click_home(self) -> "GuestPage":
         """

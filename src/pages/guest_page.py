@@ -10,6 +10,8 @@ class GuestPage(BasePage):
     URL: https://automationpractice.com
     """
 
+    # ---------- Navigation ----------
+
     def navigate_to_signup_login_page(self):
         """
         Navigate from Home Page to Signup / Login Page
