@@ -32,6 +32,17 @@ class GuestPage(BasePage):
         from pages.contact_us_page import ContactUsPage
         return ContactUsPage(self.driver)
 
+    def navigate_to_test_cases_page(self):
+        """
+        Navigate to Test Cases Page
+        :return: TestCasesPage
+        """
+        logger.info("Navigating to Test Cases Page via header")
+        self.header.click_test_cases()
+
+        from pages.test_cases_page import TestCasesPage
+        return TestCasesPage(self.driver)
+
     def is_home_page_visible(self) -> bool:
         """
         Verify that the Home Page is displayed successfully
