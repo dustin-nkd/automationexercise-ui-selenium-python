@@ -14,6 +14,8 @@ class TestCasesPage(BasePage):
 
     LBL_TEST_CASES_TITLE = (By.XPATH, "//b[normalize-space()='Test Cases']")
 
+    # ---------- Verifications ----------
+
     def is_test_cases_page_visible(self):
         """
         Verify Test Cases page is visible

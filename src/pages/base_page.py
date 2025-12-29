@@ -31,8 +31,13 @@ class BasePage:
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
     """
+
+    # ---------- Constants ----------
+
     DEFAULT_TIMEOUT: int = 10
     POLL_FREQUENCY: float = 0.25
+
+    # ---------- Initialization ----------
 
     def __init__(self, driver: WebDriver, timeout: Optional[int] = None) -> None:
         """
@@ -44,6 +49,8 @@ class BasePage:
         self.timeout = timeout or self.DEFAULT_TIMEOUT
         logger.debug("BasePage initialized with timeout=%s", self.timeout)
 
+    # ---------- Wait Helpers ----------
+
     def _wait_for(self, condition, timeout: Optional[int] = None) -> Any:
         """
         Internal helper using WebDriverWait
@@ -53,6 +60,8 @@ class BasePage:
         _timeout = timeout or self.timeout
         logger.debug("Waiting for condition %s with timeout=%s", condition, _timeout)
         return WebDriverWait(self.driver, _timeout, self.POLL_FREQUENCY).until(condition)
+
+    # ---------- Find Elements ----------
 
     def find(self, locator: Locator, timeout: Optional[int] = None) -> WebElement:
         """
@@ -92,6 +101,8 @@ class BasePage:
         logger.debug("No elements found for locator after timeout")
         return []
 
+    # ---------- Click Actions ----------
+
     def click(self, locator: Locator, timeout: Optional[int] = None) -> None:
         """
         Safely clicks an element (waits until it is visible and clickable)
@@ -122,6 +133,8 @@ class BasePage:
         logger.error("safe_click failed after %s attempts for %s", retries + 1, locator)
         return False
 
+    # ---------- Input Actions ----------
+
     def send_keys(self, locator: Locator, text: str, clear_first: bool = True, timeout: Optional[int] = None) -> None:
         """
         Types text into the input field. If clear_first=True, the field is cleard before typing
@@ -132,6 +145,8 @@ class BasePage:
         if clear_first:
             elem.clear()
         elem.send_keys(text)
+
+    # ---------- Getters ----------
 
     def get_text(self, locator: Locator, timeout: Optional[int] = None) -> str:
         """
@@ -151,6 +166,8 @@ class BasePage:
         value = elem.get_attribute(attribute)
         logger.debug("Attribute '%s' of %s = %s", attribute, locator, value)
         return value
+
+    # ---------- State Checks ----------
 
     def is_displayed(self, locator: Locator, timeout: Optional[int] = None) -> bool:
         """
@@ -204,6 +221,8 @@ class BasePage:
             logger.error("Message '%s' is not visible or text mismatch: %s", expected_text, e)
             return False
 
+    # ---------- JavaScript / Scroll ----------
+
     def scroll_into_view(self, locator: Locator, timeout: Optional[int] = None) -> None:
         """
         Scrolls the element into the viewport using JavaScript
@@ -219,67 +238,6 @@ class BasePage:
         logger.debug("Executing script %s", script)
         return self.driver.execute_script(script, *args)
 
-    def switch_to_frame(self, locator: Locator, timeout: Optional[int] = None) -> None:
-        """
-        Switches to an iframe using a locator
-        """
-        elem = self.find(locator, timeout)
-        logger.debug("Switching to frame %s", locator)
-        self.driver.switch_to.frame(elem)
-
-    def switch_to_default(self) -> None:
-        """
-        Switches back to the default content
-        """
-        logger.debug("Switching to default content")
-        self.driver.switch_to.default_content()
-
-    def take_screenshot(self, name: Optional[str] = None) -> bytes:
-        """
-        Takes a screenshot and returns the image bytes (PNG). The file can be attached to Allure
-        """
-        name = name or f"screenshot_{int(time.time() * 1000)}.png"
-        try:
-            png = self.driver.get_screenshot_as_png()
-            logger.info("Captured screenshot %s (%d bytes", name, len(png))
-            return png
-        except WebDriverException as e:
-            logger.exception("Failed to capture screenshot: %s", e)
-            return b""
-
-    def attach_screenshot_to_allure(self, name: Optional[str] = None) -> None:
-        """
-        Automatically takes a screenshot and attaches it to the Allure report
-        """
-        png = self.take_screenshot(name)
-        if png:
-            allure.attach(png, name=name or "screenshot", attachment_type=allure.attachment_type.PNG)
-            logger.debug("Attached screenshot to Allure %s", name)
-
-    def wait_and_click(self, locator: Locator, timeout: Optional[int] = None) -> bool:
-        """
-        Waits for the element to become clickable and the clicks it, returning True/False
-        """
-        try:
-            self.safe_click(locator, timeout)
-            return True
-        except Exception as e:
-            logger.exception("wait_and_click failed for %s: %s", locator, e)
-            self.attach_screenshot_to_allure(f"wait_and_click_failure_{int(time.time())}")
-            return False
-
-    def wait_and_send_keys(self, locator: Locator, text: str, timeout: Optional[int] = None) -> bool:
-        """
-        Waits until the element is visiblee, then enters text, returning True/False
-        """
-        try:
-            self.send_keys(locator, text, timeout=timeout)
-            return True
-        except Exception as e:
-            logger.exception("wait_and_send_keys failed for %s: %s", locator, e)
-            self.attach_screenshot_to_allure(f"wait_and_send_key_failure_{int(time.time())}")
-            return False
-
     def hover(self, locator: Locator, timeout: Optional[int] = None) -> None:
         """
         Hovers over the element using JavaScript (fallback when ActionChains is unreliable)
@@ -293,12 +251,16 @@ class BasePage:
             elem
         )
 
+    # ---------- Navigation ----------
+
     def navigate_to(self, url: str) -> None:
         """
         Navigates to a URL
         """
         logger.info("Navigating to URL: %s", url)
         self.driver.get(url)
+
+    # ---------- Dropdown / Upload ----------
 
     def select_dropdown_by_value(self, locator: Locator, value: str, timeout: Optional[int] = None) -> None:
         """
@@ -320,6 +282,8 @@ class BasePage:
         """
         absolute_path = str(Path(file_path).resolve())
         self.send_keys(locator, absolute_path)
+
+    # ---------- Alerts ----------
 
     def wait_for_alert(self, timeout: Optional[int] = None) -> Alert:
         """
@@ -354,3 +318,70 @@ class BasePage:
         """
         alert = self.wait_for_alert()
         return alert.text
+
+    # ---------- Screenshots / Allure ----------
+
+    def take_screenshot(self, name: Optional[str] = None) -> bytes:
+        """
+        Takes a screenshot and returns the image bytes (PNG). The file can be attached to Allure
+        """
+        name = name or f"screenshot_{int(time.time() * 1000)}.png"
+        try:
+            png = self.driver.get_screenshot_as_png()
+            logger.info("Captured screenshot %s (%d bytes", name, len(png))
+            return png
+        except WebDriverException as e:
+            logger.exception("Failed to capture screenshot: %s", e)
+            return b""
+
+    def attach_screenshot_to_allure(self, name: Optional[str] = None) -> None:
+        """
+        Automatically takes a screenshot and attaches it to the Allure report
+        """
+        png = self.take_screenshot(name)
+        if png:
+            allure.attach(png, name=name or "screenshot", attachment_type=allure.attachment_type.PNG)
+            logger.debug("Attached screenshot to Allure %s", name)
+
+    # ---------- Frame / Context Switching ----------
+
+    def switch_to_frame(self, locator: Locator, timeout: Optional[int] = None) -> None:
+        """
+        Switches to an iframe using a locator
+        """
+        elem = self.find(locator, timeout)
+        logger.debug("Switching to frame %s", locator)
+        self.driver.switch_to.frame(elem)
+
+    def switch_to_default(self) -> None:
+        """
+        Switches back to the default content
+        """
+        logger.debug("Switching to default content")
+        self.driver.switch_to.default_content()
+
+    # ---------- Composite / Safe Actions ----------
+
+    def wait_and_click(self, locator: Locator, timeout: Optional[int] = None) -> bool:
+        """
+        Waits for the element to become clickable and the clicks it, returning True/False
+        """
+        try:
+            self.safe_click(locator, timeout)
+            return True
+        except Exception as e:
+            logger.exception("wait_and_click failed for %s: %s", locator, e)
+            self.attach_screenshot_to_allure(f"wait_and_click_failure_{int(time.time())}")
+            return False
+
+    def wait_and_send_keys(self, locator: Locator, text: str, timeout: Optional[int] = None) -> bool:
+        """
+        Waits until the element is visiblee, then enters text, returning True/False
+        """
+        try:
+            self.send_keys(locator, text, timeout=timeout)
+            return True
+        except Exception as e:
+            logger.exception("wait_and_send_keys failed for %s: %s", locator, e)
+            self.attach_screenshot_to_allure(f"wait_and_send_key_failure_{int(time.time())}")
+            return False

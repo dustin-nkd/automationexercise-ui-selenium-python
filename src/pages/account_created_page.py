@@ -15,12 +15,16 @@ class AccountCreatedPage(BasePage):
     LBL_ACCOUNT_CREATED = (By.XPATH, "//b[normalize-space()='Account Created!']")
     BTN_CONTINUE = (By.XPATH, "//a[normalize-space()='Continue']")
 
+    # ---------- Getters ----------
+
     def get_account_created_message(self) -> str:
         """
         Get account created message
         """
         logger.info("Getting account created message")
         return self.get_text(self.LBL_ACCOUNT_CREATED)
+
+    # ---------- Actions ----------
 
     def click_continue(self):
         """

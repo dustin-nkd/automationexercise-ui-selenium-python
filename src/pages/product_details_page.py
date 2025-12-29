@@ -21,6 +21,8 @@ class ProductDetailsPage(BasePage):
     LBL_CONDITION = (By.XPATH, "//b[normalize-space()='Condition:']")
     LBL_BRAND = (By.XPATH, "//b[normalize-space()='Brand:']")
 
+    # ---------- Visibility ----------
+
     def is_product_details_page_visible(self) -> bool:
         """
         Verify product detail page is visible
@@ -69,6 +71,8 @@ class ProductDetailsPage(BasePage):
         """
         logger.info("Verifying product brand is visible")
         return self.is_displayed(self.LBL_BRAND)
+
+    # ---------- Verifications ----------
 
     def are_product_details_visible(self) -> bool:
         """

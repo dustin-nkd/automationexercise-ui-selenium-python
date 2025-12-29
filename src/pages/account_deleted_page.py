@@ -15,12 +15,16 @@ class AccountDeletedPage(BasePage):
     LBL_ACCOUNT_DELETED = (By.XPATH, "//b[normalize-space()='Account Deleted!']")
     BTN_CONTINUE = (By.XPATH, "//a[@data-qa='continue-button']")
 
+    # ---------- Getters ----------
+
     def get_account_deleted_message(self) -> str:
         """
         Get account deleted message
         """
         logger.info("Getting account deleted message")
         return self.get_text(self.LBL_ACCOUNT_DELETED)
+
+    # ---------- Actions ----------
 
     def click_continue(self) -> None:
         """
