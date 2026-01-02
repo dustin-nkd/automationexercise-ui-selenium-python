@@ -62,3 +62,12 @@ class GuestPage(BasePage):
         """
         logger.info("Verifying Home Page is visible via header")
         return self.header.is_header_visible()
+
+    # ---------- Actions ----------
+
+    def scroll_to_footer(self) -> None:
+        """
+        Scroll down to Footer Page
+        """
+        logger.info("Scrolling down to Footer Page via header")
+        self.footer.scroll_down_to_footer()
