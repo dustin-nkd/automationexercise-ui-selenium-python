@@ -17,6 +17,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 
+from components.footer_component import FooterComponent
 from components.header_component import HeaderComponent
 from utilities.logger import get_logger
 
@@ -46,6 +47,7 @@ class BasePage:
         """
         self.driver = driver
         self.header = HeaderComponent(self)
+        self.footer = FooterComponent(self)
         self.timeout = timeout or self.DEFAULT_TIMEOUT
         logger.debug("BasePage initialized with timeout=%s", self.timeout)
 
