@@ -18,6 +18,7 @@ class HeaderComponent:
     BTN_CONTACT_US = (By.CSS_SELECTOR, "a[href='/contact_us']")
     BTN_TEST_CASES = (By.XPATH, "//a[contains(text(),'Test Cases')]")
     BTN_PRODUCTS = (By.XPATH, "//a[@href='/products']")
+    BTN_CART = (By.CSS_SELECTOR, "a[href='/view_cart']")
 
     LBL_LOGGED_USER = (By.XPATH, "//li[a[contains(., 'Logged in as')]]")
 
@@ -83,3 +84,10 @@ class HeaderComponent:
         """
         logger.info("Clicking to Products")
         self.base.click(self.BTN_PRODUCTS)
+
+    def click_cart(self) -> None:
+        """
+        Click to cart
+        """
+        logger.info("Clicking to Cart")
+        self.base.click(self.BTN_CART)

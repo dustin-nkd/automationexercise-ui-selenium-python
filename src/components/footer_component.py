@@ -20,7 +20,7 @@ class FooterComponent:
 
     # ---------- Visibility ----------
 
-    def is_subcription_visible(self) -> bool:
+    def is_subscription_visible(self) -> bool:
         """
         Verify SUBCRTIPTION title is visible
         """
@@ -37,7 +37,7 @@ class FooterComponent:
 
     # ---------- Actions ----------
 
-    def subcribe(self, email: str) -> None:
+    def subscribe(self, email: str) -> None:
         """
         Subscribe with email
         """

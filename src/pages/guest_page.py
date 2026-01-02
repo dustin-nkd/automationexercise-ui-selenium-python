@@ -56,6 +56,19 @@ class GuestPage(BasePage):
         from pages.products_page import ProductsPage
         return ProductsPage(self.driver)
 
+    def navigate_to_cart_page(self):
+        """
+        Navigate to Cart Page
+        :return: CartPage
+        """
+        logger.info("Navigating to Cart Page via header")
+        self.header.click_cart()
+
+        from pages.cart_page import CartPage
+        return CartPage(self.driver)
+
+    # ---------- Visibility ----------
+
     def is_home_page_visible(self) -> bool:
         """
         Verify that the Home Page is displayed successfully
