@@ -15,6 +15,8 @@ class ProductsPage(BasePage):
     BTN_SEARCH = (By.XPATH, "//button[@id='submit_search']")
     LBL_SEARCHED_PRODUCTS = (By.XPATH, "//h2[normalize-space()='Searched Products']")
     LBL_PRODUCT_NAMES = (By.CSS_SELECTOR, ".productinfo p")
+    BTN_CONTINUE_SHOPPING = (By.XPATH, "//button[normalize-space()='Continue Shopping']")
+    BTN_VIEW_CART = (By.XPATH, "//u[normalize-space()='View Cart']")
 
     # ---------- Visibility ----------
 
@@ -61,6 +63,18 @@ class ProductsPage(BasePage):
             f"//a[normalize-space()='View Product']"
         )
 
+    def _product(self, item: str):
+        return (
+            By.XPATH,
+            f"//p[contains(.,'{item}')]/parent::div[contains(@class ,'productinfo')]"
+        )
+
+    def _btn_add_to_cart_by_item(self, item: str):
+        return (
+            By.XPATH,
+            f"//p[normalize-space()='{item}']/parent::div[@class='overlay-content']//a[contains(@class,'add-to-cart')]"
+        )
+
     # ---------- Actions / Navigation ----------
 
     def click_view_product_of(self, item: str):
@@ -89,3 +103,29 @@ class ProductsPage(BasePage):
         logger.info("Getting all displayed product names")
         elems = self.find_all(self.LBL_PRODUCT_NAMES)
         return [elem.text.strip() for elem in elems if elem.text.strip()]
+
+    def add_product_to_cart_by_item(self, item: str) -> None:
+        """
+        Hover over product and click Add to cart
+        """
+        logger.info("Adding product %s to cart", item)
+        self.scroll_into_view(self._product(item))
+        self.hover(self._product(item))
+        self.click(self._btn_add_to_cart_by_item(item))
+
+    def click_continue_shopping(self) -> None:
+        """
+        Click Continue Shopping
+        """
+        logger.info("Continue Shopping")
+        self.click(self.BTN_CONTINUE_SHOPPING)
+
+    def click_view_cart(self):
+        """
+        Click view cart
+        """
+        logger.info("Clicking view cart")
+        self.click(self.BTN_VIEW_CART)
+
+        from pages.cart_page import CartPage
+        return CartPage(self.driver)

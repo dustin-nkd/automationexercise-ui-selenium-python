@@ -10,6 +10,7 @@ from selenium.common.exceptions import (
     TimeoutException,
     WebDriverException,
 )
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
@@ -242,16 +243,11 @@ class BasePage:
 
     def hover(self, locator: Locator, timeout: Optional[int] = None) -> None:
         """
-        Hovers over the element using JavaScript (fallback when ActionChains is unreliable)
+        Hover over element using real mouse movement
         """
         elem = self.find_visible(locator, timeout)
-        logger.debug("Hovering element %s using JS", locator)
-        self.driver.execute_script(
-            "var evObj = document.createEvent('MouseEvents');"
-            "evObj.initMouseEvent('mouseover', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);"
-            "arguments[0].dispatchEvent(evObj);",
-            elem
-        )
+        logger.info("Hovering over element %s using ActionChains", locator)
+        ActionChains(self.driver).move_to_element(elem).perform()
 
     # ---------- Navigation ----------
 
