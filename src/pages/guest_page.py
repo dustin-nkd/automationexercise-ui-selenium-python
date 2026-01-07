@@ -84,3 +84,13 @@ class GuestPage(BasePage):
         """
         logger.info("Scrolling down to Footer Page via header")
         self.footer.scroll_down_to_footer()
+
+    def view_product_from_home(self, name: str):
+        """
+        Navigate to Products Details page from home
+        """
+        logger.info("Navigating to Products Details page suggests from home")
+        self.products.click_view_product_of(name)
+
+        from pages.product_details_page import ProductDetailsPage
+        return ProductDetailsPage(self.driver)

@@ -15,8 +15,6 @@ class ProductsPage(BasePage):
     BTN_SEARCH = (By.XPATH, "//button[@id='submit_search']")
     LBL_SEARCHED_PRODUCTS = (By.XPATH, "//h2[normalize-space()='Searched Products']")
     LBL_PRODUCT_NAMES = (By.CSS_SELECTOR, ".productinfo p")
-    BTN_CONTINUE_SHOPPING = (By.XPATH, "//button[normalize-space()='Continue Shopping']")
-    BTN_VIEW_CART = (By.XPATH, "//u[normalize-space()='View Cart']")
 
     # ---------- Visibility ----------
 
@@ -96,14 +94,6 @@ class ProductsPage(BasePage):
         self.send_keys(self.INPUT_SEARCH, product, clear_first=True)
         self.click(self.BTN_SEARCH)
 
-    def get_displayed_product_names(self) -> list[str]:
-        """
-        Get all displayed product names
-        """
-        logger.info("Getting all displayed product names")
-        elems = self.find_all(self.LBL_PRODUCT_NAMES)
-        return [elem.text.strip() for elem in elems if elem.text.strip()]
-
     def add_product_to_cart_by_item(self, item: str) -> None:
         """
         Hover over product and click Add to cart
@@ -113,19 +103,29 @@ class ProductsPage(BasePage):
         self.hover(self._product(item))
         self.click(self._btn_add_to_cart_by_item(item))
 
-    def click_continue_shopping(self) -> None:
-        """
-        Click Continue Shopping
-        """
-        logger.info("Continue Shopping")
-        self.click(self.BTN_CONTINUE_SHOPPING)
-
     def click_view_cart(self):
         """
         Click view cart
         """
         logger.info("Clicking view cart")
-        self.click(self.BTN_VIEW_CART)
+        self.add_to_cart_modal.click_view_cart()
 
         from pages.cart_page import CartPage
         return CartPage(self.driver)
+
+    def continue_shopping_after_add(self) -> None:
+        """
+        Continue shopping after adding product
+        """
+        logger.info("Continuing shopping after adding product")
+        self.add_to_cart_modal.click_continue_shopping()
+
+    # ---------- Dynamic Locators ----------
+
+    def get_displayed_product_names(self) -> list[str]:
+        """
+        Get all displayed product names
+        """
+        logger.info("Getting all displayed product names")
+        elems = self.find_all(self.LBL_PRODUCT_NAMES)
+        return [elem.text.strip() for elem in elems if elem.text.strip()]
