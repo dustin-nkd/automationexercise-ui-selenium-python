@@ -21,7 +21,7 @@ def test_add_products_in_cart(driver, config):
         products_page.add_product_to_cart_by_item("Blue Top")
 
     with allure.step("Click 'Continue Shopping' button"):
-        products_page.click_continue_shopping()
+        products_page.continue_shopping_after_add()
 
     with allure.step("Hover over second product and click 'Add to cart'"):
         products_page.add_product_to_cart_by_item("Men Tshirt")

@@ -18,8 +18,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 
+from components.add_to_cart_modal_component import AddToCartComponent
 from components.footer_component import FooterComponent
 from components.header_component import HeaderComponent
+from components.home_products_component import HomeProductsComponent
 from utilities.logger import get_logger
 
 Locator = Tuple[str, str]  # (By.CSS_SELECTOR, "selector") or (By.XPATH, "//...")
@@ -49,6 +51,8 @@ class BasePage:
         self.driver = driver
         self.header = HeaderComponent(self)
         self.footer = FooterComponent(self)
+        self.products = HomeProductsComponent(self)
+        self.add_to_cart_modal = AddToCartComponent(self)
         self.timeout = timeout or self.DEFAULT_TIMEOUT
         logger.debug("BasePage initialized with timeout=%s", self.timeout)
 

@@ -20,6 +20,8 @@ class ProductDetailsPage(BasePage):
     LBL_AVAILABILITY = (By.XPATH, "//b[contains(text(),'Availability')]")
     LBL_CONDITION = (By.XPATH, "//b[normalize-space()='Condition:']")
     LBL_BRAND = (By.XPATH, "//b[normalize-space()='Brand:']")
+    INPUT_QUANTITY = (By.XPATH, "//input[@id='quantity']")
+    BTN_ADD_TO_CART = (By.XPATH, "//button[normalize-space()='Add to cart']")
 
     # ---------- Visibility ----------
 
@@ -87,3 +89,23 @@ class ProductDetailsPage(BasePage):
             self.is_product_condition_visible(),
             self.is_product_brand_visible()
         ])
+
+    # ---------- Actions ----------
+
+    def set_quantity(self, quantity: str) -> None:
+        """
+        Set quantity of product
+        """
+        logger.info("Setting quantity of product")
+        self.send_keys(self.INPUT_QUANTITY, quantity, clear_first=True)
+
+    def add_to_cart_and_view_cart(self):
+        """
+        Add product to cart and continue shopping
+        """
+        logger.info("Adding product to cart and continue shopping")
+        self.click(self.BTN_ADD_TO_CART)
+        self.add_to_cart_modal.click_view_cart()
+
+        from pages.cart_page import CartPage
+        return CartPage(self.driver)

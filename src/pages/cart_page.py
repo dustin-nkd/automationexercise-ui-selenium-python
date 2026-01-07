@@ -20,6 +20,14 @@ class CartPage(BasePage):
     def _parse_price(self, text: str) -> int:
         return int(text.replace("Rs.", "").strip())
 
+    # ---------- Dynamic Locators ----------
+
+    def _quantity_of_item(self, name: str):
+        return (
+            By.XPATH,
+            f"//h4/a[contains(text(),'{name}')]/ancestor::td[@class='cart_description']/following-sibling::td[@class='cart_quantity']/button"
+        )
+
     # ---------- Getters ----------
 
     def get_cart_item_count(self) -> int:
@@ -28,6 +36,13 @@ class CartPage(BasePage):
         """
         logger.info(f"Getting number of cart items")
         return len(self.find_all(self.ROW_CART_ITEMS))
+
+    def get_quantity_of_item(self, name: str) -> str:
+        """
+        Get number of products in cart
+        """
+        logger.info(f"Getting number of product {name}")
+        return self.get_text(self._quantity_of_item(name))
 
     # ---------- Verifications ----------
 
