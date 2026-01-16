@@ -123,3 +123,15 @@ class LoginPage(BasePage):
 
         from pages.signup_page import SignUpPage
         return SignUpPage(self.driver)
+
+    def login(self, email: str, password: str):
+        """
+        Login with existing user
+        """
+        logger.info("Logging in with email: %s", email)
+        self.enter_login_email(email)
+        self.enter_password(password)
+        self.click_login()
+
+        from pages.home_page import HomePage
+        return HomePage(self.driver)
