@@ -186,3 +186,50 @@ class SignUpPage(BasePage):
 
         from pages.account_created_page import AccountCreatedPage
         return AccountCreatedPage(self.driver)
+
+    def create_account(self, user_profile: dict):
+        """
+        Fill all signup details and create account
+        """
+        logger.info("Creating account with full user profile")
+
+        # ---------- Title & Password ----------
+        self.select_title(user_profile["title"])
+        self.enter_password(user_profile["password"])
+
+        # ---------- Date of Birth ----------
+        dob = user_profile["date_of_birth"]
+        self.select_date_of_birth(
+            day=dob["day"],
+            month=dob["month"],
+            year=dob["year"]
+        )
+
+        # ---------- Preferences ----------
+        self.select_newsletter()
+        self.select_offers()
+
+        # ---------- Personal Info ----------
+        personal = user_profile["personal_info"]
+        self.enter_first_name(personal["first_name"])
+        self.enter_last_name(personal["last_name"])
+        self.enter_company(personal["company"])
+
+        # ---------- Address ----------
+        address = user_profile["address"]
+        self.enter_address(address["address1"])
+        self.enter_address2(address["address2"])
+        self.select_country(address["country"])
+        self.enter_state(address["state"])
+        self.enter_city(address["city"])
+        self.enter_zipcode(address["zipcode"])
+
+        # ---------- Contact ----------
+        contact = user_profile["contact"]
+        self.enter_mobile_number(contact["mobile_number"])
+
+        # ---------- Submit ----------
+        self.click_create_account()
+
+        from pages.account_created_page import AccountCreatedPage
+        return AccountCreatedPage(self.driver)

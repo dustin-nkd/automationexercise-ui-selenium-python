@@ -94,3 +94,10 @@ class GuestPage(BasePage):
 
         from pages.product_details_page import ProductDetailsPage
         return ProductDetailsPage(self.driver)
+
+    def add_product_to_cart_by_item_from_home(self, name: str):
+        """
+        Add product to cart by item from home
+        """
+        logger.info("Add product to cart by item from home")
+        self.products.add_product_to_cart_by_item(name)

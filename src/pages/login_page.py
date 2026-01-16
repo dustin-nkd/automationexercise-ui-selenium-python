@@ -109,3 +109,17 @@ class LoginPage(BasePage):
 
         from pages.home_page import HomePage
         return HomePage(self.driver)
+
+    # ---------- Actions ----------
+
+    def sign_up(self, name: str, email: str):
+        """
+        Sign up new user
+        """
+        logger.info("Signing up new user")
+        self.enter_name(name)
+        self.enter_signup_email(email)
+        self.click_signup()
+
+        from pages.signup_page import SignUpPage
+        return SignUpPage(self.driver)
