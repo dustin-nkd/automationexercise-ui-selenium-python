@@ -12,6 +12,7 @@ import allure
 import pytest
 from selenium.common.exceptions import WebDriverException
 
+from pages.guest_page import GuestPage
 from utilities.config_reader import ConfigReader
 from utilities.logger import get_logger
 from utilities.user_action import register_user
@@ -102,3 +103,18 @@ def registered_user(driver, config):
     )
 
     yield user
+
+@pytest.fixture
+def logged_in_user(driver, config, registered_user):
+    guest_page = GuestPage(driver)
+
+    guest_page.navigate_to(config["base_url"])
+    login_page = guest_page.navigate_to_signup_login_page()
+
+    home_page = login_page.login(
+        registered_user["email"],
+        registered_user["password"]
+    )
+
+    assert home_page.is_logged_user_visible()
+    return home_page
