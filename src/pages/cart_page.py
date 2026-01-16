@@ -16,6 +16,10 @@ class CartPage(BasePage):
     PRICE_BY_INDEX = lambda self, i: (By.XPATH, f"(//td[@class='cart_price'])[{i}]")
     QUANTITY_BY_INDEX = lambda self, i: (By.XPATH, f"(//td[@class='cart_quantity']/button)[{i}]")
     TOTAL_BY_INDEX = lambda self, i: (By.XPATH, f"(//td[@class='cart_total'])[{i}]")
+    LBL_CART_TITLE = (By.XPATH, "//li[@class='active' and normalize-space()='Shopping Cart']")
+    TABLE_CART = (By.ID, "cart_info_table")
+    BTN_CHECKOUT = (By.XPATH, "//a[normalize-space()='Proceed To Checkout']")
+    BTN_REGISTER_LOGIN = (By.XPATH, "//u[normalize-space()='Register / Login']")
 
     def _parse_price(self, text: str) -> int:
         return int(text.replace("Rs.", "").strip())
@@ -62,3 +66,41 @@ class CartPage(BasePage):
         return all(self.verify_product_price_quantity_total(i)
                    for i in range(1, self.get_cart_item_count() + 1)
                    )
+
+    # ---------- Visibility ----------
+
+    def is_cart_page_visible(self) -> bool:
+        """
+        Verify if cart page is visible
+        """
+        logger.info("Verifying if cart page is visible")
+        return self.is_displayed(self.LBL_CART_TITLE)
+
+    def is_cart_table_visible(self) -> bool:
+        """
+        Verify if cart table is visible
+        """
+        logger.info("Verifying if cart table is visible")
+        return self.is_displayed(self.TABLE_CART)
+
+    # ---------- Actions ----------
+
+    def proceed_to_checkout(self):
+        """
+        Click proceed to checkout
+        """
+        logger.info("Proceed to checkout")
+        self.click(self.BTN_CHECKOUT)
+
+        from pages.checkout_page import CheckoutPage
+        return CheckoutPage(self.driver)
+
+    def click_register_login(self):
+        """
+        Click register login
+        """
+        logger.info("Click register login")
+        self.click(self.BTN_REGISTER_LOGIN)
+
+        from pages.login_page import LoginPage
+        return LoginPage(self.driver)

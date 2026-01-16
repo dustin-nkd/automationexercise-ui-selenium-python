@@ -29,6 +29,12 @@ class HomeProductsComponent:
             f"//a[normalize-space()='View Product']"
         )
 
+    def _btn_add_to_cart_by_item(self, item: str):
+        return (
+            By.XPATH,
+            f"//p[normalize-space()='{item}']/parent::div[@class='overlay-content']//a[contains(@class,'add-to-cart')]"
+        )
+
     # ---------- Actions ----------
 
     def click_view_product_of(self, name: str):
@@ -38,3 +44,12 @@ class HomeProductsComponent:
         logger.info("Clicking view product of item")
         self.base.scroll_into_view(self._btn_view_product(name))
         self.base.click(self._btn_view_product(name))
+
+    def add_product_to_cart_by_item(self, item: str) -> None:
+        """
+        Hover over product and click Add to cart
+        """
+        logger.info("Adding product %s to cart", item)
+        self.base.scroll_into_view(self._product(item))
+        self.base.hover(self._product(item))
+        self.base.click(self._btn_add_to_cart_by_item(item))
