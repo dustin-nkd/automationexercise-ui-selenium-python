@@ -8,18 +8,18 @@ from utilities.data_generator import DataGenerator
 @allure.feature("Order")
 def test_place_order_register_before_checkout(driver, config):
     base_url = config.get("base_url")
-    guets_page = GuestPage(driver)
+    guest_page = GuestPage(driver)
     name = DataGenerator.unique_username("user")
     email = DataGenerator.unique_email("user")
 
     with allure.step("Navigate to url 'https://automationexercise.com'"):
-        guets_page.navigate_to(base_url)
+        guest_page.navigate_to(base_url)
 
     with allure.step("Verify that home page is visible successfully"):
-        assert guets_page.is_home_page_visible()
+        assert guest_page.is_home_page_visible()
 
     with allure.step("Click 'Signup / Login' button"):
-        login_page = guets_page.navigate_to_signup_login_page()
+        login_page = guest_page.navigate_to_signup_login_page()
 
     with allure.step("Fill all details in Signup and create account"):
         sign_up_page = login_page.sign_up(name, email)
@@ -41,7 +41,7 @@ def test_place_order_register_before_checkout(driver, config):
         home_page.add_to_cart_modal.click_continue_shopping()
 
     with allure.step("Click 'Cart' button"):
-        cart_page = guets_page.navigate_to_cart_page()
+        cart_page = guest_page.navigate_to_cart_page()
 
     with allure.step("Verify that cart page is displayed"):
         assert cart_page.is_cart_page_visible()
