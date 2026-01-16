@@ -228,6 +228,14 @@ class BasePage:
             logger.error("Message '%s' is not visible or text mismatch: %s", expected_text, e)
             return False
 
+    def wait_until_not_present(self, locator: Locator, timeout: Optional[int] = None) -> None:
+        """
+        Waits until the element is not present on the DOM
+        """
+        logger.info("Waits until element is not present: %s", locator)
+        wait_time = timeout or self.timeout
+        self._wait_for(EC.invisibility_of_element_located(locator))
+
     # ---------- JavaScript / Scroll ----------
 
     def scroll_into_view(self, locator: Locator, timeout: Optional[int] = None) -> None:

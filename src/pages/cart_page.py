@@ -32,6 +32,18 @@ class CartPage(BasePage):
             f"//h4/a[contains(text(),'{name}')]/ancestor::td[@class='cart_description']/following-sibling::td[@class='cart_quantity']/button"
         )
 
+    def _btn_remove_by_item(self, name: str):
+        return (
+            By.XPATH,
+            f"//a[contains(text(),'{name}')]/ancestor::td[@class='cart_description']/following-sibling::td[@class='cart_delete']//a"
+        )
+
+    def _cart_row_by_item(self, name: str):
+        return (
+            By.XPATH,
+            f"//h4/a[normalize-space()='{name}']/ancestor::tr"
+        )
+
     # ---------- Getters ----------
 
     def get_cart_item_count(self) -> int:
@@ -83,6 +95,13 @@ class CartPage(BasePage):
         logger.info("Verifying if cart table is visible")
         return self.is_displayed(self.TABLE_CART)
 
+    def is_item_removed(self, name: str) -> bool:
+        """
+        Verify if item is removed
+        """
+        logger.info("Verifying if item is removed")
+        return not self.is_present(self._cart_row_by_item(name))
+
     # ---------- Actions ----------
 
     def proceed_to_checkout(self):
@@ -104,3 +123,11 @@ class CartPage(BasePage):
 
         from pages.login_page import LoginPage
         return LoginPage(self.driver)
+
+    def remove_item(self, name: str) -> None:
+        """
+        Click remove item
+        """
+        logger.info("Click remove item")
+        self.click(self._btn_remove_by_item(name))
+        self.wait_until_not_present(self._cart_row_by_item(name))
