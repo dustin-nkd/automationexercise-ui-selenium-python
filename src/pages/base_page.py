@@ -19,6 +19,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 
 from components.add_to_cart_modal_component import AddToCartComponent
+from components.category_sidebar_component import CategorySidebarComponent
 from components.footer_component import FooterComponent
 from components.header_component import HeaderComponent
 from components.home_products_component import HomeProductsComponent
@@ -53,6 +54,7 @@ class BasePage:
         self.footer = FooterComponent(self)
         self.products = HomeProductsComponent(self)
         self.add_to_cart_modal = AddToCartComponent(self)
+        self.category_sidebar = CategorySidebarComponent(self)
         self.timeout = timeout or self.DEFAULT_TIMEOUT
         logger.debug("BasePage initialized with timeout=%s", self.timeout)
 
