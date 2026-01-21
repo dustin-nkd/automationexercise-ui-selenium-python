@@ -44,6 +44,12 @@ class CartPage(BasePage):
             f"//h4/a[normalize-space()='{name}']/ancestor::tr"
         )
 
+    def _cart_item_names(self):
+        return (
+            By.CSS_SELECTOR,
+            "td.cart_description h4 a"
+        )
+
     # ---------- Getters ----------
 
     def get_cart_item_count(self) -> int:
@@ -59,6 +65,14 @@ class CartPage(BasePage):
         """
         logger.info(f"Getting number of product {name}")
         return self.get_text(self._quantity_of_item(name))
+
+    def get_cart_product_names(self) -> list[str]:
+        """
+        Get all product names in cart
+        """
+        logger.info("Getting all product names in cart")
+        elems = self.find_all(self._cart_item_names())
+        return [elem.text.strip() for elem in elems if elem.text.strip()]
 
     # ---------- Verifications ----------
 
@@ -78,6 +92,18 @@ class CartPage(BasePage):
         return all(self.verify_product_price_quantity_total(i)
                    for i in range(1, self.get_cart_item_count() + 1)
                    )
+
+    def are_products_in_cart(self, expected_products: list[str]) -> bool:
+        """
+        Verify all expected products are present in cart
+        """
+        cart_products = self.get_cart_product_names()
+        logger.info("Expected products: %s", expected_products)
+        logger.info("Cart products: %s", cart_products)
+        return all(
+            product in cart_products
+            for product in expected_products
+        )
 
     # ---------- Visibility ----------
 

@@ -120,6 +120,20 @@ class ProductsPage(BasePage):
         logger.info("Continuing shopping after adding product")
         self.add_to_cart_modal.click_continue_shopping()
 
+    def add_all_displayed_products_to_cart(self) -> None:
+        """
+        Add all currently displayed products to cart
+        (used for searched products)
+        """
+        logger.info("Adding all displayed products to cart")
+        product_names = self.get_displayed_product_names()
+        for index, name in enumerate(product_names):
+            self.add_product_to_cart_by_item(name)
+            if index < len(product_names) - 1:
+                self.add_to_cart_modal.click_continue_shopping()
+            else:
+                pass
+
     # ---------- Dynamic Locators ----------
 
     def get_displayed_product_names(self) -> list[str]:
