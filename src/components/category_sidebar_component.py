@@ -15,6 +15,7 @@ class CategorySidebarComponent:
 
     CATEGORY_LST = (By.XPATH, "//div[@id='accordian']")
     LBL_CATEGORY_TITLE = (By.XPATH, "//h2[@class='title text-center']")
+    BRANDS_LST = (By.XPATH, "//div[@class='brands_products']")
 
     # ---------- Dynamic Locators ----------
 
@@ -28,6 +29,12 @@ class CategorySidebarComponent:
         return (
             By.XPATH,
             f"//a[normalize-space()='{name}']"
+        )
+
+    def _brand_name(self, name: str):
+        return (
+            By.XPATH,
+            f"//a[@href='/brand_products/{name}']"
         )
 
     # ---------- Visibility ----------
@@ -48,6 +55,13 @@ class CategorySidebarComponent:
         actual = self.get_category_title()
         return expected in actual
 
+    def is_brands_list_visible(self) -> bool:
+        """
+        Verifies if the sidebar category is in the sidebar component
+        """
+        logger.info("Checking if sidebar category is in sidebar component")
+        return self.base.is_displayed(self.BRANDS_LST)
+
     # ---------- Actions ----------
 
     def expand_category(self, category: str) -> None:
@@ -63,6 +77,13 @@ class CategorySidebarComponent:
         """
         logger.info("Clicking sub category %s", sub_category)
         self.base.click(self._sub_category(sub_category))
+
+    def click_brand(self, name: str) -> None:
+        """
+        Clicks the sidebar brand component
+        """
+        logger.info("Clicking brand %s", name)
+        self.base.click(self._brand_name(name))
 
     # ---------- Getters ----------
 
