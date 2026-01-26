@@ -22,6 +22,12 @@ class ProductDetailsPage(BasePage):
     LBL_BRAND = (By.XPATH, "//b[normalize-space()='Brand:']")
     INPUT_QUANTITY = (By.XPATH, "//input[@id='quantity']")
     BTN_ADD_TO_CART = (By.XPATH, "//button[normalize-space()='Add to cart']")
+    LBL_REVIEW = (By.XPATH, "//a[normalize-space()='Write Your Review']")
+    INPUT_NAME = (By.XPATH, "//input[@id='name']")
+    INPUT_EMAIL_ADDRESS = (By.XPATH, "//input[@id='email']")
+    INPUT_REVIEW = (By.XPATH, "//textarea[@id='review']")
+    BTN_SUBMIT = (By.XPATH, "//button[@id='button-review']")
+    MSG_SUCCESS = (By.CSS_SELECTOR, "div[class='alert-success alert'] span")
 
     # ---------- Visibility ----------
 
@@ -74,6 +80,13 @@ class ProductDetailsPage(BasePage):
         logger.info("Verifying product brand is visible")
         return self.is_displayed(self.LBL_BRAND)
 
+    def is_review_section_visible(self) -> bool:
+        """
+        Verify review section is visible
+        """
+        logger.info("Verifying review section is visible")
+        return self.is_displayed(self.LBL_REVIEW)
+
     # ---------- Verifications ----------
 
     def are_product_details_visible(self) -> bool:
@@ -109,3 +122,40 @@ class ProductDetailsPage(BasePage):
 
         from pages.cart_page import CartPage
         return CartPage(self.driver)
+
+    def enter_review_name(self, name: str) -> None:
+        """
+        Enter name of product
+        """
+        logger.info("Entering name of product")
+        self.send_keys(self.INPUT_NAME, name, clear_first=True)
+
+    def enter_review_email(self, email: str) -> None:
+        """
+        Enter email of product
+        """
+        logger.info("Entering email of product")
+        self.send_keys(self.INPUT_EMAIL_ADDRESS, email, clear_first=True)
+
+    def enter_review_content(self, review: str) -> None:
+        """
+        Enter review of product
+        """
+        logger.info("Entering review of product")
+        self.send_keys(self.INPUT_REVIEW, review, clear_first=True)
+
+    def click_submit(self) -> None:
+        """
+        Click submit button
+        """
+        logger.info("Click submit button")
+        self.click(self.BTN_SUBMIT)
+
+    # ---------- Getters ----------
+
+    def get_success_message(self) -> str:
+        """
+        Get success message
+        """
+        logger.info("Get success message")
+        return self.get_text(self.MSG_SUCCESS)
