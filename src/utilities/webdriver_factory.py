@@ -31,9 +31,10 @@ class WebDriverFactory:
         implicit_wait: 5
     """
 
-    def __init__(self, config: Dict) -> None:
+    def __init__(self, config: Dict, download_dir: str | None = None) -> None:
         self.config = config
-        logger.info("WebDriverFactory initalized with config: %s", config)
+        self.download_dir = download_dir
+        logger.info("WebDriverFactory initalized with config: %s download_dir: %s", config, download_dir)
 
     def get_driver(self) -> webdriver.Remote:
         """
@@ -68,6 +69,15 @@ class WebDriverFactory:
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--no-sandbox")
         options.add_argument("--start-maximized")
+
+        if self.download_dir:
+            prefs = {
+                "download.default_directory": self.download_dir,
+                "download.prompt_for_downloads": False,
+                "download.directory_upgrade": True,
+                "safebrowsing.enabled": True,
+            }
+            options.add_experimental_option("prefs", prefs)
 
         driver = webdriver.Chrome(options=options)
         self._post_setup(driver)

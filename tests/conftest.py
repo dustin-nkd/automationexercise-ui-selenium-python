@@ -7,6 +7,8 @@ Features:
     - Uses centralized logger
 """
 import os
+import shutil
+import tempfile
 
 import allure
 import pytest
@@ -60,14 +62,16 @@ def config(pytestconfig):
     return cfg
 
 
-@pytest.fixture()
-def driver(request, config):
+@pytest.fixture
+def driver(request, config, download_dir):
     """
     Creates WebDriver using WebDriverFactory and yields it to the test
     On teardown, if test failed, attaches screenshot/page source/browser logs to Allure
     Always quits the browser at the end
     """
-    factory = WebDriverFactory(config)
+    factory = WebDriverFactory(
+        config=config,
+        download_dir=download_dir)
     driver = factory.get_driver()
 
     # Optional: maximize for consistent view (some drivers ignore start-maximized)
@@ -104,6 +108,7 @@ def registered_user(driver, config):
 
     yield user
 
+
 @pytest.fixture
 def logged_in_user(driver, config, registered_user):
     guest_page = GuestPage(driver)
@@ -118,3 +123,14 @@ def logged_in_user(driver, config, registered_user):
 
     assert home_page.is_logged_user_visible()
     return home_page
+
+
+@pytest.fixture
+def download_dir():
+    """
+    Temporar directory for file downloads
+    Automatically cleaned up after test
+    """
+    path = tempfile.mkdtemp(prefix="download_")
+    yield path
+    shutil.rmtree(path, ignore_errors=True)

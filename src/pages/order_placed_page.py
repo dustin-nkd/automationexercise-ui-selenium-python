@@ -14,6 +14,7 @@ class OrderPlacedPage(BasePage):
 
     LBL_ORDER_PLACED = (By.XPATH, "//b[normalize-space()='Order Placed!']")
     BTN_CONTINUE = (By.XPATH, "//a[normalize-space()='Continue']")
+    BTN_DOWNLOAD_INVOICE = (By.XPATH, "//a[normalize-space()='Download Invoice']")
     MSG_SUCCESS = (By.XPATH, "//p[normalize-space()='Congratulations! Your order has been confirmed!']")
 
     # ---------- Verifications ----------
@@ -45,3 +46,10 @@ class OrderPlacedPage(BasePage):
 
         from pages.home_page import HomePage
         return HomePage(self.driver)
+
+    def download_invoice(self):
+        """
+        Download invoice
+        """
+        logger.info("Downloading invoice")
+        self.click(self.BTN_DOWNLOAD_INVOICE)
