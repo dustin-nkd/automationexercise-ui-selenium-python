@@ -50,6 +50,12 @@ class CartPage(BasePage):
             "td.cart_description h4 a"
         )
 
+    def _item_in_cart(self, name: str):
+        return (
+            By.XPATH,
+            f"//tr//td[@class='cart_description']//a[contains(.,'{name}')]"
+        )
+
     # ---------- Getters ----------
 
     def get_cart_item_count(self) -> int:
@@ -127,6 +133,13 @@ class CartPage(BasePage):
         """
         logger.info("Verifying if item is removed")
         return not self.is_present(self._cart_row_by_item(name))
+
+    def is_item_visible(self, name: str) -> bool:
+        """
+        Verify if item is visible
+        """
+        logger.info("Verifying if item is visible")
+        return self.is_displayed(self._item_in_cart(name))
 
     # ---------- Actions ----------
 

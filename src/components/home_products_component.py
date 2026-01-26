@@ -13,6 +13,8 @@ class HomeProductsComponent:
     def __init__(self, base_page):
         self.base = base_page
 
+    LBL_RECOMMENDED_ITEMS = (By.XPATH, "//h2[normalize-space()='recommended items']")
+
     # ---------- Dynamic Locators ----------
 
     def _product(self, name: str):
@@ -35,6 +37,12 @@ class HomeProductsComponent:
             f"//p[normalize-space()='{item}']/parent::div[@class='overlay-content']//a[contains(@class,'add-to-cart')]"
         )
 
+    def _btn_add_to_cart_recommended_item(self, name: str):
+        return (
+            By.XPATH,
+            f"//div[@class='recommended_items']//div[@class='single-products']//p[contains(text(),'{name}')]/following-sibling::a[contains(.,'Add to cart')]"
+        )
+
     # ---------- Actions ----------
 
     def click_view_product_of(self, name: str):
@@ -53,3 +61,18 @@ class HomeProductsComponent:
         self.base.scroll_into_view(self._product(item))
         self.base.hover(self._product(item))
         self.base.click(self._btn_add_to_cart_by_item(item))
+
+    def add_recommended_item_to_cart(self, item: str) -> None:
+        """
+        Scroll to item and click Add to cart
+        """
+        logger.info("Scrolling to item %s", item)
+        self.base.scroll_into_view(self._btn_add_to_cart_recommended_item(item))
+        self.base.click(self._btn_add_to_cart_recommended_item(item))
+
+    def is_recommened_itemes_visible(self) -> bool:
+        """
+        Verify if recommended items are visible
+        """
+        logger.info("Verifying if recommended items are visible")
+        return self.base.is_displayed(self.LBL_RECOMMENDED_ITEMS)
