@@ -91,3 +91,10 @@ class HeaderComponent:
         """
         logger.info("Clicking to Cart")
         self.base.click(self.BTN_CART)
+
+    def scroll_up(self) -> None:
+        """
+        Scroll up page
+        """
+        logger.info("Scrolling up page")
+        self.base.scroll_into_view(self.HDR_MAIN)
