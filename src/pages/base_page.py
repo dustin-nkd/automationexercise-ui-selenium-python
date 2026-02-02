@@ -23,6 +23,7 @@ from components.category_sidebar_component import CategorySidebarComponent
 from components.footer_component import FooterComponent
 from components.header_component import HeaderComponent
 from components.home_products_component import HomeProductsComponent
+from components.scroll_up_component import ScrollUpComponent
 from utilities.logger import get_logger
 
 Locator = Tuple[str, str]  # (By.CSS_SELECTOR, "selector") or (By.XPATH, "//...")
@@ -55,6 +56,7 @@ class BasePage:
         self.products = HomeProductsComponent(self)
         self.add_to_cart_modal = AddToCartComponent(self)
         self.category_sidebar = CategorySidebarComponent(self)
+        self.scroll_up = ScrollUpComponent(self)
         self.timeout = timeout or self.DEFAULT_TIMEOUT
         logger.debug("BasePage initialized with timeout=%s", self.timeout)
 

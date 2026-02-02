@@ -1,3 +1,5 @@
+from selenium.webdriver.common.by import By
+
 from pages.base_page import BasePage
 from utilities.logger import get_logger
 
@@ -9,6 +11,8 @@ class GuestPage(BasePage):
     Page Object for AutomationExcercise Guest Page
     URL: https://automationpractice.com
     """
+
+    LBL_SLIDER = (By.CSS_SELECTOR, "div[class='item active'] h2")
 
     # ---------- Navigation ----------
 
@@ -75,6 +79,13 @@ class GuestPage(BasePage):
         """
         logger.info("Verifying Home Page is visible via header")
         return self.header.is_header_visible()
+
+    def is_label_slider_visible(self) -> bool:
+        """
+        Verify that the Label Slider is displayed successfully
+        """
+        logger.info("Verifying Label Slider is visible via header")
+        return self.is_displayed(self.LBL_SLIDER)
 
     # ---------- Actions ----------
 
