@@ -25,13 +25,13 @@ def register_user(app, base_url, user_profile):
     logger.info(f"Registerting user with email: {email}")
 
     # 4. Initial Sigup
-    login_page.enter_username(username)
+    login_page.enter_name(username)
     login_page.enter_signup_email(email)
     signup_page = login_page.click_signup()
 
     # 5. Fill Signup Form using high-level method
     user_profile["name"] = username
-    account_created_page = signup_page.click_create_account(user_profile)
+    account_created_page = signup_page.create_account(user_profile)
 
     # 6. Finalize and Clean up
     home_page = account_created_page.click_continue()
