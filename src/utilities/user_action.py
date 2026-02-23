@@ -1,48 +1,43 @@
-from pages.guest_page import GuestPage
 from utilities.data_generator import DataGenerator
+from utilities.logger import get_logger
+
+logger = get_logger(__name__)
 
 
-def register_user(driver, base_url, user_profile):
-    username = DataGenerator.unique_username("login")
-    email = DataGenerator.unique_email("login")
+def register_user(app, base_url, user_profile):
+    """
+    Business action to register a new user via the UI.
+    Now uses the 'app' (Navigator) fixture directly.
+    """
+    logger.info("Starting background user registration process")
+
+    # 1. Open Site directly from the app controller
+    home_page = app.open_site(base_url)
+
+    # 2. Navigate to Log in/Signup Page via Header
+    login_page = home_page.header.click_signup_login()
+
+    # 3. Generate unique credentials
+    username = DataGenerator.unique_username("user")
+    email = DataGenerator.unique_email("reg")
     password = user_profile["password"]
 
-    guest_page = GuestPage(driver)
-    guest_page.navigate_to(base_url)
+    logger.info(f"Registerting user with email: {email}")
 
-    login_page = guest_page.navigate_to_signup_login_page()
-    login_page.enter_name(username)
+    # 4. Initial Sigup
+    login_page.enter_username(username)
     login_page.enter_signup_email(email)
-
     signup_page = login_page.click_signup()
 
-    signup_page.select_title(user_profile["title"])
-    signup_page.enter_name(username)
-    signup_page.enter_password(password)
+    # 5. Fill Signup Form using high-level method
+    user_profile["name"] = username
+    account_created_page = signup_page.click_create_account(user_profile)
 
-    dob = user_profile["date_of_birth"]
-    signup_page.select_date_of_birth(dob["day"], dob["month"], dob["year"])
-
-    personal = user_profile["personal_info"]
-    signup_page.enter_first_name(personal["first_name"])
-    signup_page.enter_last_name(personal["last_name"])
-    signup_page.enter_company(personal["company"])
-
-    address = user_profile["address"]
-    signup_page.enter_address(address["address1"])
-    signup_page.enter_address2(address["address2"])
-    signup_page.select_country(address["country"])
-    signup_page.enter_state(address["state"])
-    signup_page.enter_city(address["city"])
-    signup_page.enter_zipcode(address["zipcode"])
-
-    contact = user_profile["contact"]
-    signup_page.enter_mobile_number(contact["mobile_number"])
-
-    account_created_page = signup_page.click_create_account()
-
+    # 6. Finalize and Clean up
     home_page = account_created_page.click_continue()
-    home_page.logout()
+    home_page.header.click_logout()
+
+    logger.info("User registration completed successfully")
 
     return {
         "email": email,

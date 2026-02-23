@@ -1,55 +1,75 @@
-"""
-Features:
-    - Colorized console handler
-    - Rotating file handler
-    - Ensures no duplicate handlers are added
-    - Unified log formatting across the entire project
-"""
 import logging
-import os
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
-LOG_DIR = "logs"
-LOG_FILE = "test_run.log"
 
-# Create the logs directory if it does not exist
-if not os.path.exists(LOG_DIR):
-    os.makedirs(LOG_DIR)
+# --- Color Codes for Console ---
+class LogColors:
+    RESET = "\033[0m"
+    DEBUB = "\033[36m"  # Cyan
+    INFO = "\033[32m"  # Green
+    WARNING = "\033[33m"  # Yellow
+    ERROR = "\033[31m"  # Red
+    CRITICAL = "\033[1;31m"  # Bold Red
+
+
+class ColoredFormatter(logging.Formatter):
+    """Custom formatter to add colors to console logs."""
+    COLORS = {
+        logging.DEBUG: LogColors.DEBUB,
+        logging.INFO: LogColors.INFO,
+        logging.WARNING: LogColors.WARNING,
+        logging.ERROR: LogColors.ERROR,
+        logging.CRITICAL: LogColors.CRITICAL,
+    }
+
+    def format(self, record):
+        color = self.COLORS.get(record.levelno, LogColors.RESET)
+        record.levelname = f"{color}{record.levelname}{LogColors.RESET}"
+        return super().format(record)
 
 
 def get_logger(name: str = None) -> logging.Logger:
     """
-    Initialize and return logger
-    :param name: Logger name, typically __name__
-    :return: Configured logger instance with handlers attached
+    Initialize and return a colorized and rotating looger.
     """
+    LOG_DIR = Path("logs")
+    LOG_FILE = LOG_DIR / "test_run.log"
+
+    # Ensure logs directory exists
+    LOG_DIR.mkdir(exist_ok=True)
+
     logger = logging.getLogger(name or "framework")
 
+    # Avoid adding multiple handlers to same logger
     if logger.handlers:
         return logger
 
     logger.setLevel(logging.DEBUG)
 
-    formatter = logging.Formatter(
-        fmt="%(asctime)s [%(levelname)s] %(name)s:%(lineno)d - %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S"
-    )
+    # Unified formatting
+    log_fmt = "%(asctime)s [%(levelname)s] %(name)s:%(lineno)d - %(message)s"
+    date_fmt = "%Y-%m-%d %H:%M:%S"
 
-    console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
-    console.setFormatter(formatter)
+    # 1. Console Handler (with Colors)
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_handler.setFormatter(ColoredFormatter(fmt=log_fmt, datefmt=date_fmt))
 
+    # 2. File Handler (Rotating, Plain Text)
     file_handler = RotatingFileHandler(
-        os.path.join(LOG_DIR, LOG_FILE),
-        maxBytes=5_000_000,
+        LOG_FILE,
+        maxBytes=5_000_000,  # 5MB
         backupCount=5,
+        encoding="utf-8"
     )
     file_handler.setLevel(logging.DEBUG)
-    file_handler.setFormatter(formatter)
+    file_handler.setFormatter(ColoredFormatter(fmt=log_fmt, datefmt=date_fmt))
 
-    logger.addHandler(console)
+    logger.addHandler(console_handler)
     logger.addHandler(file_handler)
 
+    # Prevent logs from propagating to the root logger
     logger.propagate = False
 
     return logger

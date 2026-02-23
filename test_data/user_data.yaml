@@ -1,0 +1,26 @@
+# Test data for user registration and profiles
+test_user:
+  invalid_user: "invalid_user@test.com"
+  invalid_password: "invalid_password"
+
+default_registration_profile:
+  password: "password123"
+  title: "mr"
+  name: "Dustin"
+  date_of_birth:
+    day: "26"
+    month: "6"
+    year: "1999"
+  personal_info:
+    first_name: "Khanh Duy"
+    last_name: "Nguyen"
+    company: "Trulioo"
+  address:
+    address1: "70, Lu Gia street, Phu Tho ward"
+    address2: "Ho Chi Minh"
+    country: "Israel"
+    state: "Tel Aviv"
+    city: "Jerusalem"
+    zipcode: "1200"
+  contact:
+    mobile_number: "0912 123 123"

@@ -8,30 +8,31 @@ logger = get_logger(__name__)
 
 class SignUpPage(BasePage):
     """
-    Page Object for AutomationExcercise Sign Up and Login Page
-    URL: https://automationpractice.com/signup
+    Page Object for AutomationExcercise Sign Up Information Page.
+    Handles the detailed registration form.
     """
 
+    # ---------- Locators ----------
     LBL_ENTER_ACCOUNT_INFORMATION = (By.XPATH, "//b[normalize-space()='Enter Account Information']")
 
-    # ---------- Title ----------
+    # Title
     RAD_TITLE_MR = (By.XPATH, "//input[@id='id_gender1']")
     RAD_TITLE_MRS = (By.XPATH, "//input[@id='id_gender2']")
 
-    # ---------- Account ----------
+    # Account info
     INPUT_NAME = (By.XPATH, "//input[@id='name']")
     INPUT_PASSWORD = (By.XPATH, "//input[@id='password']")
 
-    # ---------- Date of Birth ----------
+    # Date of Birth
     DDL_DAY = (By.XPATH, "//select[@id='days']")
     DDL_MONTH = (By.XPATH, "//select[@id='months']")
     DDL_YEAR = (By.XPATH, "//select[@id='years']")
 
-    # ---------- Preferences ----------
+    # Preferences
     CHK_NEWSLETTER = (By.XPATH, "//input[@id='newsletter']")
     CHK_OFFERS = (By.XPATH, "//input[@id='optin']")
 
-    # ---------- Address ----------
+    # Address & Contact
     INPUT_FIRST_NAME = (By.XPATH, "//input[@id='first_name']")
     INPUT_LAST_NAME = (By.XPATH, "//input[@id='last_name']")
     INPUT_COMPANY = (By.XPATH, "//input[@id='company']")
@@ -49,187 +50,126 @@ class SignUpPage(BasePage):
 
     def get_enter_account_information_message(self) -> str:
         """
-        Get enter account information message
+        Retrives the 'Enter Account Information' header text.
         """
-        logger.info("Getting enter account information message")
+        logger.info("Getting 'Enter Account Information' header text")
         return self.get_text(self.LBL_ENTER_ACCOUNT_INFORMATION)
 
-    # ---------- Actions ----------
+    # ---------- Individual Actions ----------
 
     def select_title(self, title: str) -> None:
         """
-        Selects title
+        Selects the gender based on the provided string (Mr/Mrs).
         """
-        logger.info("Selecting title")
+        logger.info(f"Selecting title: {title}")
         if title.lower() == "mr":
             self.click(self.RAD_TITLE_MR)
-        elif title.lower() == "mrs":
+        elif title.lower() in ["mrs", "ms"]:
             self.click(self.RAD_TITLE_MRS)
         else:
-            raise ValueError(f"Invalid title: {title}")
+            raise ValueError(f"Invalid title provided: {title}")
 
     def enter_name(self, name: str) -> None:
         """
-        Enters name
+        Enters the user's name.
         """
-        logger.info("Entering name")
+        logger.info(f"Entering name: {name}")
         self.send_keys(self.INPUT_NAME, name)
 
     def enter_password(self, password: str) -> None:
         """
-        Enters password
+        Enters the user's password.
         """
         logger.info("Entering password")
         self.send_keys(self.INPUT_PASSWORD, password)
 
     def select_date_of_birth(self, day: str, month: str, year: str) -> None:
         """
-        Selects date of birth
+        Selects the full date of birth from dropdowns.
         """
-        logger.info("Selecting date of birth")
+        logger.info(f"Selecting DOB: {day}/{month}/{year}")
         self.select_dropdown_by_value(self.DDL_DAY, day)
         self.select_dropdown_by_value(self.DDL_MONTH, month)
         self.select_dropdown_by_value(self.DDL_YEAR, year)
 
     def select_newsletter(self) -> None:
         """
-        Selects newsletter
+        Checks the newsletter subscription checkbox if not already selected.
         """
-        logger.info("Selecting newsletter")
+        logger.info("Selecting newsletter checkbox")
         if not self.is_selected(self.CHK_NEWSLETTER):
             self.click(self.CHK_NEWSLETTER)
 
     def select_offers(self) -> None:
         """
-        Selects offers
+        Checks the special offers checkbox if not already selected.
         """
-        logger.info("Selecting offers")
+        logger.info("Selecting special offers checkbox")
         if not self.is_selected(self.CHK_OFFERS):
             self.click(self.CHK_OFFERS)
 
-    def enter_first_name(self, first_name: str) -> None:
-        """
-        Enters first name
-        """
-        logger.info("Entering first name")
-        self.send_keys(self.INPUT_FIRST_NAME, first_name)
-
-    def enter_last_name(self, last_name: str) -> None:
-        """
-        Enters last name
-        """
-        logger.info("Entering last name")
-        self.send_keys(self.INPUT_LAST_NAME, last_name)
-
-    def enter_company(self, company: str) -> None:
-        """
-        Enters company
-        """
-        logger.info("Entering company")
-        self.send_keys(self.INPUT_COMPANY, company)
-
-    def enter_address(self, address: str) -> None:
-        """
-        Enters address
-        """
-        logger.info("Entering address")
-        self.send_keys(self.INPUT_ADDRESS, address)
-
-    def enter_address2(self, address2: str) -> None:
-        """
-        Enters address2
-        """
-        logger.info("Entering address2")
-        self.send_keys(self.INPUT_ADDRESS2, address2)
-
     def select_country(self, country: str) -> None:
         """
-        Selects country
+        Selects the country from the dropdown.
         """
-        logger.info("Selecting country")
+        logger.info(f"Selecting country: {country}")
         self.select_dropdown_by_value(self.DDL_COUNTRY, country)
 
-    def enter_state(self, state: str) -> None:
+    def fill_address_details(self, personal_info: dict, address_info: dict, contact_info: dict) -> None:
         """
-        Enters state
+        Helper method to fill all address and contact related fields.
         """
-        logger.info("Entering state")
-        self.send_keys(self.INPUT_STATE, state)
-
-    def enter_city(self, city: str) -> None:
-        """
-        Enters city
-        """
-        logger.info("Entering city")
-        self.send_keys(self.INPUT_CITY, city)
-
-    def enter_zipcode(self, zipcode: str) -> None:
-        """
-        Enters zipcode
-        """
-        logger.info("Entering zipcode")
-        self.send_keys(self.INPUT_ZIPCODE, zipcode)
-
-    def enter_mobile_number(self, mobile_number: str) -> None:
-        """
-        Enters mobile number
-        """
-        logger.info("Entering mobile number")
-        self.send_keys(self.INPUT_MOBILE_NUMBER, mobile_number)
+        logger.info("Filling address and contact information")
+        self.send_keys(self.INPUT_FIRST_NAME, personal_info["first_name"])
+        self.send_keys(self.INPUT_LAST_NAME, personal_info["last_name"])
+        self.send_keys(self.INPUT_COMPANY, personal_info["company"])
+        self.send_keys(self.INPUT_ADDRESS, address_info["address1"])
+        self.send_keys(self.INPUT_ADDRESS2, address_info["address2"])
+        self.select_country(address_info["country"])
+        self.send_keys(self.INPUT_STATE, address_info["state"])
+        self.send_keys(self.INPUT_CITY, address_info["city"])
+        self.send_keys(self.INPUT_ZIPCODE, address_info["zipcode"])
+        self.send_keys(self.INPUT_MOBILE_NUMBER, contact_info["mobile_number"])
 
     def click_create_account(self):
         """
-        Clicks create account
+        Clicks the 'Create Account' button and returns the AccountCreatedPage.
         """
-        logger.info("Clicking create account")
+        logger.info("Clicking 'Create Account' button")
         self.click(self.BTN_CREATE_ACCOUNT)
+        return self.navigate.account_created_page
 
-        from pages.account_created_page import AccountCreatedPage
-        return AccountCreatedPage(self.driver)
+    # ---------- Combined Business Logic ----------
 
-    def create_account(self, user_profile: dict):
+    def create_account(self, user_profile: dict, subscribe_newsletter: bool = False, receive_offers: bool = False):
         """
-        Fill all signup details and create account
+        Comprehensive method to fill the entire signup and submit.
+        Returns the AccountCreatedPage instance via Navigator.
         """
-        logger.info("Creating account with full user profile")
+        logger.info("Performing full content account creation flow")
 
-        # ---------- Title & Password ----------
+        # 1. Title, Name, Password
         self.select_title(user_profile["title"])
+        # Name is usually autofilled from previous step, but we can re-render if needed
+        self.enter_name(user_profile["name"])
         self.enter_password(user_profile["password"])
 
-        # ---------- Date of Birth ----------
+        # 2. Date of Birth
         dob = user_profile["date_of_birth"]
-        self.select_date_of_birth(
-            day=dob["day"],
-            month=dob["month"],
-            year=dob["year"]
+        self.select_date_of_birth(dob["day"], dob["month"], dob["year"])
+
+        # 3. Optional Checkboxes
+        if subscribe_newsletter:
+            self.select_newsletter()
+        if receive_offers:
+            self.select_offers()
+
+        # 4. Address & Contact
+        self.fill_address_details(
+            personal_info=user_profile["personal_info"],
+            address_info=user_profile["address"],
+            contact_info=user_profile["contact"]
         )
 
-        # ---------- Preferences ----------
-        self.select_newsletter()
-        self.select_offers()
-
-        # ---------- Personal Info ----------
-        personal = user_profile["personal_info"]
-        self.enter_first_name(personal["first_name"])
-        self.enter_last_name(personal["last_name"])
-        self.enter_company(personal["company"])
-
-        # ---------- Address ----------
-        address = user_profile["address"]
-        self.enter_address(address["address1"])
-        self.enter_address2(address["address2"])
-        self.select_country(address["country"])
-        self.enter_state(address["state"])
-        self.enter_city(address["city"])
-        self.enter_zipcode(address["zipcode"])
-
-        # ---------- Contact ----------
-        contact = user_profile["contact"]
-        self.enter_mobile_number(contact["mobile_number"])
-
-        # ---------- Submit ----------
-        self.click_create_account()
-
-        from pages.account_created_page import AccountCreatedPage
-        return AccountCreatedPage(self.driver)
+        # 5. Submit and return next page context
+        return self.click_create_account()

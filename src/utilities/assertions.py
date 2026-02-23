@@ -1,33 +1,54 @@
+from typing import Any, Optional
+
 import allure
 
 
-def assert_text_contains(actual_text: str, expected_text: str, message: str, driver=None) -> None:
+def _attach_failure_details(actual: Any, expected: Any, page_object: Optional[Any] = None) -> None:
     """
-    Assert actual_text contains expected_text
-    On failure, attach expected vs actual text and screenshot to Allure
+    Helper to attach debug info to Allure report on failure.
+    """
+    # 1. Attach comparison text
+    allure.attach(
+        f"EXPECTD:\n{expected}\n\nACTUAL:\n{actual}",
+        name="comparision_details",
+        attachment_type=allure.attachment_type.TEXT
+    )
+
+    # 2. Attach page context (URL and Screenshot) if page_object (BasePage) is provided
+    if page_object:
+        try:
+            current_url = page_object.driver.current_url
+            allure.attach(current_url, name="failure_url", attachment_type=allure.attachment_type.TEXT)
+
+            # Reusing the screenshot method from our refactored BasePage
+            page_object.attach_screenshot_to_allure(name="assertion_failure_screenshot")
+        except Exception as e:
+            allure.attach(f"Could not capture context: {str(e)}", name="context_error",
+                          attachment_type=allure.attachment_type.TEXT)
+
+
+def assert_true(condition: bool, message: str, page_object: Optional[Any] = None) -> None:
+    """
+    Assert that a condition is true.
+    """
+    if not condition:
+        _attach_failure_details(actual=condition, expected=True, page_object=page_object)
+        raise AssertionError(message)
+
+
+def assert_text_contains(actual_text: str, expected_text: str, message: str, page_object: Optional[Any] = None) -> None:
+    """
+    Assert actual_text contains expected_text.
     """
     if expected_text not in actual_text:
-        # 1) Attach expected vs actual
-        allure.attach(f"EXPECTED:\n{expected_text}\n\nACTUAL:\n{actual_text}",
-                      name="expected_vs_actual",
-                      attachment_type=allure.attachment_type.TEXT)
+        _attach_failure_details(actual=actual_text, expected=expected_text, page_object=page_object)
+        raise AssertionError(message)
 
-        # 2) Attach current URL
-        if driver:
-            try:
-                png = driver.get_screenshot_as_png()
 
-                if png and len(png) > 1000:
-                    allure.attach(png,
-                                  name="assertion_failure_screenshot",
-                                  attachment_type=allure.attachment_type.PNG)
-                else:
-                    allure.attach("Screenshot data is empty or invalid",
-                                  name="screenshot_error",
-                                  attachment_type=allure.attachment_type.TEXT)
-            except Exception as e:
-                allure.attach(str(e),
-                              name="screenshot_exception",
-                              attachment_type=allure.attachment_type.TEXT)
-
+def assert_equal(acutal: Any, expected: Any, message: str, page_object: Optional[Any] = None) -> None:
+    """
+    Assert that two values are equal.
+    """
+    if actual != expected:
+        _attach_failure_details(actual=acutal, expected=expected, page_object=page_object)
         raise AssertionError(message)
