@@ -5,7 +5,7 @@ from utilities.data_loader import DataLoader
 
 
 @allure.feature("Access Control")
-@allure.story("Login ưith invalid credentials")
+@allure.story("Login with invalid credentials")
 def test_login_user_with_incorrect_email_and_password(app, config):
     """
     Test Case 3: Login User with incorrect email and password
