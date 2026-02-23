@@ -1,29 +1,33 @@
 import allure
 
-from pages.guest_page import GuestPage
-from utilities.assertions import assert_text_contains
+from utilities.assertions import assert_text_contains, assert_true
 
 
-@allure.feature("Logout")
-def test_logout_user(driver, config, registered_user):
+@allure.feature("Access Control")
+@allure.story("Logout functionality")
+def test_logout_user(app, config, registered_user):
+    """
+    Test Case 4: Logout User
+    Verifies that a logged-in user can successfully log out and return to the login page.
+    """
     base_url = config.get("base_url")
-    guest_page = GuestPage(driver)
 
-    with allure.step("Navigate to url 'https://automationexercise.com'"):
-        guest_page.navigate_to(base_url)
+    with allure.step("Launch browser and navigate to home page"):
+        home_page = app.open_site(base_url)
 
     with allure.step("Verify that home page is visible successfully"):
-        assert guest_page.is_home_page_visible()
+        # Header visibility confirms the page shell is loaded
+        assert_true(home_page.header.is_header_visible(),
+                    "Home page header is not visible", home_page)
 
     with allure.step("Click on 'Signup / Login' button"):
-        login_page = guest_page.navigate_to_signup_login_page()
+        login_page = home_page.header.click_signup_login()
 
     with allure.step("Verify 'Login to your account' is visible"):
-        actual_text = login_page.get_login_to_your_account_message()
-        assert_text_contains(actual_text=actual_text,
+        assert_text_contains(actual_text=login_page.get_login_to_your_account_message(),
                              expected_text="Login to your account",
-                             message="Login to your account is not visible",
-                             driver=driver)
+                             message="Login header mismatch",
+                             page_object=login_page)
 
     with allure.step("Enter correct email address and password"):
         login_page.enter_login_email(registered_user["email"])
@@ -33,14 +37,16 @@ def test_logout_user(driver, config, registered_user):
         home_page = login_page.click_login()
 
     with allure.step("Verify that 'Logged in as username' is visible"):
-        assert home_page.is_logged_user_visible()
+        assert_true(home_page.header.is_header_visible(),
+                    f"User {registered_user['username']} failed to login", home_page)
 
     with allure.step("Click 'Logout' button"):
-        login_page = home_page.logout()
+        # Navigation logic is centralized in the Header component
+        login_page = home_page.header.click_logout()
 
     with allure.step("Verify that user is navigated to login page"):
-        actual_text = login_page.get_login_to_your_account_message()
-        assert_text_contains(actual_text=actual_text,
+        # After logout, we check if we are back the Login section
+        assert_text_contains(actual_text=login_page.get_login_to_your_account_message(),
                              expected_text="Login to your account",
-                             message="User is not navigated to Login page after logout",
-                             driver=driver)
+                             message="User was not redirected to Login page after logout",
+                             page_object=login_page)
