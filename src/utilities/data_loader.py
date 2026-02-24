@@ -8,8 +8,9 @@ logger = get_logger(__name__)
 
 
 class DataLoader:
-    SRC_DIR = Path(__file__).parent.parent.resolve()
+    SRC_DIR = Path(__file__).parent.parent.parent.resolve()
     DATA_DIR = SRC_DIR / "test_data"
+    UPLOAD_DIR = DATA_DIR / "upload"
 
     @staticmethod
     def load_yaml(file_name: str) -> dict:
