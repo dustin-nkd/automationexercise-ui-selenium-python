@@ -88,7 +88,7 @@ class HeaderComponent:
         """
         logger.info("Clicking to Products")
         self.base.click(self.BTN_PRODUCTS)
-        return self.base.navigate.product_page
+        return self.base.navigate.products_page
 
     def click_cart(self):
         """

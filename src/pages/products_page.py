@@ -1,14 +1,19 @@
 from selenium.webdriver.common.by import By
 
-from pages.base_page import BasePage, logger
+from pages.base_page import BasePage
+from utilities.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class ProductsPage(BasePage):
     """
-    Page Object for AutomationExcercise Products Page
+    Page Object for AutomationExcercise Products Page.
+    Handles product litsting, searching, and adding products to cart.
     URL: https://automationpractice.com/products
     """
 
+    # ---------- Static Locators ----------
     LBL_ALL_PRODUCTS_TITLE = (By.XPATH, "//h2[normalize-space()='All Products']")
     LST_PRODUCT_ITEMS = (By.XPATH, "//div[@class='single-products']")
     INPUT_SEARCH = (By.XPATH, "//input[@id='search_product']")
@@ -16,130 +21,110 @@ class ProductsPage(BasePage):
     LBL_SEARCHED_PRODUCTS = (By.XPATH, "//h2[normalize-space()='Searched Products']")
     LBL_PRODUCT_NAMES = (By.CSS_SELECTOR, ".productinfo p")
 
-    # ---------- Visibility ----------
+    # ---------- Visibility Checks ----------
 
     def is_products_page_visible(self) -> bool:
-        """
-        Verify Products page is visible
-        """
-        logger.info("Verifying Products page is visible")
+        """Verifies if the 'All Products' page is successfully loaded."""
+        logger.info("Verifying Products page visibility")
         return self.is_displayed(self.LBL_ALL_PRODUCTS_TITLE)
 
     def is_products_list_visible(self) -> bool:
-        """
-        Verify Products list is visible
-        """
-        logger.info("Verifying Products list is visible")
+        """Checks if the product grid container is displayed."""
+        logger.info("Verifying Products list visibility")
         return self.is_displayed(self.LST_PRODUCT_ITEMS)
 
     def is_searched_products_visible(self) -> bool:
-        """
-        Verify Searched products list is visible
-        """
-        logger.info("Verifying Searched products list is visible")
+        """Verifies if the 'Searched Products' header is displayed after a search."""
+        logger.info("Verifying Searched Products section visibility")
         return self.is_displayed(self.LBL_SEARCHED_PRODUCTS)
+
+    # ---------- Dynamic Locator Generators ----------
+
+    def _get_btn_view_product(self, item_name: str):
+        """Generates locator for 'View Product' button based on product name."""
+        return By.XPATH, f"//div[contains(@class,'product-image-wrapper')][.//p[normalize-space()='{item_name}']]//a[normalize-space()='View Product']"
+
+    def _get_product_container(self, item_name: str):
+        """Generates locator for the main product container box."""
+        return By.XPATH, f"//p[contains(.,'{item_name}')]/parent::div[contains(@class ,'productinfo')]"
+
+    def _get_btn_add_to_cart(self, item_name: str):
+        """Generates locator for 'Add to Cart' button (usually in the hover overlay)."""
+        return By.XPATH, f"//p[normalize-space()='{item_name}']/parent::div[@class='overlay-content']//a[contains(@class,'add-to-cart')]"
+
+    # ---------- Search Actions ----------
+
+    def search_product(self, product_name: str) -> None:
+        """
+        Performs a product search.
+        :param product_name: The string to search for.
+        """
+        logger.info(f"Searching for product: {product_name}")
+        self.send_keys(self.INPUT_SEARCH, product_name, clear_first=True)
+        self.click(self.BTN_SEARCH)
+
+    def get_displayed_product_names(self) -> list[str]:
+        """Returns a list of all product names currently visible on the page."""
+        logger.info("Retrieves all visible product names")
+        elements = self.find_all(self.LBL_PRODUCT_NAMES)
+        return [el.text.strip() for el in elements if el.text.strip()]
 
     def are_all_products_related_to_search(self, keyword: str) -> bool:
         """
-        Verify all products related to search
+        Validates that all displayed products contain search keyword.
         """
-        logger.info("Verifying all products related to search: %s", keyword)
-        product_names = self.get_displayed_product_names()
-        if not product_names:
-            logger.warning("No products displayed after search")
+        logger.info(f"Validating search results for keyword: {keyword}")
+        names = self.get_displayed_product_names()
+        if not names:
+            logger.warning("No products found to validate.")
             return False
-        keyword_lower = keyword.lower()
-        return all(keyword_lower in name.lower() for name in product_names)
+        return all(keyword.lower() in name.lower() for name in names)
 
-    # ---------- Dynamic Locators ----------
+    # ---------- Navigation & Cart Actions ----------
 
-    def _btn_view_product(self, item: str):
-        return (
-            By.XPATH,
-            f"//div[contains(@class,'product-image-wrapper')]"
-            f"[.//p[normalize-space()='{item}']]"
-            f"//a[normalize-space()='View Product']"
-        )
-
-    def _product(self, item: str):
-        return (
-            By.XPATH,
-            f"//p[contains(.,'{item}')]/parent::div[contains(@class ,'productinfo')]"
-        )
-
-    def _btn_add_to_cart_by_item(self, item: str):
-        return (
-            By.XPATH,
-            f"//p[normalize-space()='{item}']/parent::div[@class='overlay-content']//a[contains(@class,'add-to-cart')]"
-        )
-
-    # ---------- Actions / Navigation ----------
-
-    def click_view_product_of(self, item: str):
+    def click_view_product_of(self, item_name: str):
         """
-        Click view product of item
+        Navigates to the details page of a specific product.
         """
-        logger.info("Clicking view product of item")
-        self.scroll_into_view(self._btn_view_product(item))
-        self.click(self._btn_view_product(item))
+        logger.info(f"Navigating to details of: {item_name}")
+        locator = self._get_btn_view_product(item_name)
+        self.scroll_into_view(locator)
+        self.click(locator)
+        return self.navigate.product_details_page
 
-        from pages.product_details_page import ProductDetailsPage
-        return ProductDetailsPage(self.driver)
+    def add_product_to_cart(self, item_name: str) -> None:
+        """
+        Hovers over a product and clicks 'Add to Cart'.
+        """
+        logger.info(f"Adding '{item_name}' to cart")
+        product_box = self._get_product_container(item_name)
+        add_btn = self._get_btn_add_to_cart(item_name)
 
-    def search(self, product: str) -> None:
-        """
-        Search product
-        """
-        logger.info("Searching product: %s", product)
-        self.send_keys(self.INPUT_SEARCH, product, clear_first=True)
-        self.click(self.BTN_SEARCH)
-
-    def add_product_to_cart_by_item(self, item: str) -> None:
-        """
-        Hover over product and click Add to cart
-        """
-        logger.info("Adding product %s to cart", item)
-        self.scroll_into_view(self._product(item))
-        self.hover(self._product(item))
-        self.click(self._btn_add_to_cart_by_item(item))
-
-    def click_view_cart(self):
-        """
-        Click view cart
-        """
-        logger.info("Clicking view cart")
-        self.add_to_cart_modal.click_view_cart()
-
-        from pages.cart_page import CartPage
-        return CartPage(self.driver)
-
-    def continue_shopping_after_add(self) -> None:
-        """
-        Continue shopping after adding product
-        """
-        logger.info("Continuing shopping after adding product")
-        self.add_to_cart_modal.click_continue_shopping()
+        self.scroll_into_view(product_box)
+        self.hover(product_box)
+        self.click(add_btn)
 
     def add_all_displayed_products_to_cart(self) -> None:
         """
-        Add all currently displayed products to cart
-        (used for searched products)
+        Iterates through all displayed products and adds them to cart.
         """
         logger.info("Adding all displayed products to cart")
-        product_names = self.get_displayed_product_names()
-        for index, name in enumerate(product_names):
-            self.add_product_to_cart_by_item(name)
-            if index < len(product_names) - 1:
+        names = self.get_displayed_product_names()
+        for i, name in enumerate(names):
+            self.add_product_to_cart(name)
+            # Use shared modal component via Navigator/Base context
+            if i < len(names) - 1:
                 self.add_to_cart_modal.click_continue_shopping()
-            else:
-                pass
 
-    # ---------- Dynamic Locators ----------
+    def click_view_cart(self):
+        """
+        Navigates to the Cart page via the success modal.
+        """
+        logger.info("Navigating to Cart page")
+        self.add_to_cart_modal.click_view_cart()
+        return self.navigate.cart_page
 
-    def get_displayed_product_names(self) -> list[str]:
-        """
-        Get all displayed product names
-        """
-        logger.info("Getting all displayed product names")
-        elems = self.find_all(self.LBL_PRODUCT_NAMES)
-        return [elem.text.strip() for elem in elems if elem.text.strip()]
+    def continue_shopping(self) -> None:
+        """Clicks 'Continue Shopping' on the success modal."""
+        logger.info("Continuing shopping flow")
+        self.add_to_cart_modal.click_continue_shopping()
