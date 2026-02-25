@@ -1,32 +1,44 @@
 import allure
 
-from pages.guest_page import GuestPage
+from utilities.assertions import assert_true, assert_text_contains
 from utilities.data_generator import DataGenerator
 
 
 @allure.feature("Subscription")
-def test_verify_subcription_in_cart_page(driver, config):
+@allure.story("Verify Subscription in Cart Page")
+def test_verify_subscription_in_cart_page(app, config):
+    """
+    Test Case 11: Verify Subscription in Cart page
+    Ensures that the subscription feature works correctly when accessed from the Cart page.
+    """
     base_url = config.get("base_url")
-    guest_page = GuestPage(driver)
-    email = DataGenerator.unique_email("subscribe")
+    email = DataGenerator.unique_email("cart_subscribe")
 
-    with allure.step("Navigate to url 'https://automationexercise.com'"):
-        guest_page.navigate_to(base_url)
+    with allure.step("Launch browser and navigate to home page"):
+        home_page = app.open_site(base_url)
 
     with allure.step("Verify that home page is visible successfully"):
-        guest_page.is_home_page_visible()
+        assert_true(home_page.header.is_header_visible(),
+                    "Home page failed to load", home_page)
 
     with allure.step("Click 'Cart' button"):
-        cart_page = guest_page.navigate_to_cart_page()
+        # Navigation via Header
+        cart_page = home_page.header.click_cart()
 
     with allure.step("Scroll down to footer"):
-        pass
+        # Reusing the same FooterComponent method
+        cart_page.footer.scroll_to_footer()
 
     with allure.step("Verify text 'SUBSCRIPTION'"):
-        assert cart_page.footer.is_subscription_visible()
+        assert_true(cart_page.footer.is_subscription_label_visible(),
+                    "'SUBSCRIPTION' label not found on Cart page footer", cart_page)
 
-    with allure.step("Enter email address in input and click arrow button"):
-        cart_page.footer.subscribe(email)
+    with allure.step("Enter email address and click subscribe button"):
+        cart_page.footer.subscribe("email")
 
     with allure.step("Verify success message 'You have been successfully subscribed!' is visible"):
-        assert cart_page.footer.is_success_message_visible()
+        actual_msg = cart_page.footer.get_success_message_text()
+        assert_text_contains(actual_text=actual_msg,
+                             expected_text="You have been successfully subscribed!",
+                             message="Subscription success message mismatch",
+                             page_object=home_page)
