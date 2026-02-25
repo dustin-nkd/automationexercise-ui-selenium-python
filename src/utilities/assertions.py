@@ -45,7 +45,7 @@ def assert_text_contains(actual_text: str, expected_text: str, message: str, pag
         raise AssertionError(message)
 
 
-def assert_equal(acutal: Any, expected: Any, message: str, page_object: Optional[Any] = None) -> None:
+def assert_equal(actual: Any, expected: Any, message: str, page_object: Optional[Any] = None) -> None:
     """
     Assert that two values are equal.
     """
