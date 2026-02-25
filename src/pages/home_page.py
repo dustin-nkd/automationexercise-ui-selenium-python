@@ -1,3 +1,5 @@
+from selenium.webdriver.common.by import By
+
 from pages.base_page import BasePage
 from utilities.logger import get_logger
 
@@ -7,43 +9,38 @@ logger = get_logger(__name__)
 class HomePage(BasePage):
     """
     Page Object for AutomationExcercise Home Page
-    URL: https://automationpractice.com
     """
+
+    # ---------- Locators ----------
+    def _get_view_product_btn(self, product_name: str):
+        return By.XPATH, f"//div[@class='features_items']//p[text()='{product_name}']/ancestor::div[@class='product-image-wrapper']//a[text()='View Product']"
 
     # ---------- Verifications ----------
 
     def is_home_page_visible(self) -> bool:
-        """
-        Verify that the Home Page is displayed successfully
-        """
-        logger.info("Verifying Home Page is visible")
+        logger.info("Verifying Home Page visibility via header")
         return self.header.is_header_visible()
 
     def is_logged_user_visible(self) -> bool:
-        """
-        Verify that the page logged user is displayed successfully
-        """
-        logger.info("Verifying logged user is visible")
         return self.header.is_logged_user_visible()
 
     # ---------- Actions / Navigation ----------
+    def view_product(self, product_name: str):
+        """
+        Clicks on 'View Product' for a specific product on the Home Page.
+        """
+        logger.info(f"Viewing product details for {product_name} from Home Page")
+        locator = self._get_view_product_btn(product_name)
+        self.scroll_into_view(locator)
+        self.click(locator)
+        return self.navigate.product_details_page
 
     def delete_account(self):
-        """
-        Delete account and navigate to AccountDeletePage
-        """
         logger.info("Deleting account via header")
         self.header.click_delete_account()
-
-        from pages.account_deleted_page import AccountDeletedPage
-        return AccountDeletedPage(self.driver)
+        return self.navigate.account_deleted_page
 
     def logout(self):
-        """
-        Logout user and navigate to LoginPage
-        """
         logger.info("Logging out via header")
         self.header.click_logout()
-
-        from pages.login_page import LoginPage
-        return LoginPage(self.driver)
+        return self.navigate.login_page
