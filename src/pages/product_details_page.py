@@ -9,153 +9,89 @@ logger = get_logger(__name__)
 class ProductDetailsPage(BasePage):
     """
     Page Object for AutomationExcercise Product Detail Page
-    URL: https://automationpractice.com/product_details
+    Handles detailed product information and review submission.
     """
 
-    PRODUCT_INFORMATION_CONTAINER = (By.XPATH, "//div[@class='product-information']")
-
-    LBL_PRODUCT_NAME = (By.CSS_SELECTOR, "div[class='product-information'] h2")
+    # ---------- Locators ----------
+    PRODUCT_INFO_CONTAINER = (By.CLASS_NAME, "product-information")
+    LBL_PRODUCT_NAME = (By.CSS_SELECTOR, ".product-information h2")
     LBL_CATEGORY = (By.XPATH, "//p[contains(text(),'Category')]")
     LBL_PRICE = (By.XPATH, "//span[contains(text(),'Rs.')]")
     LBL_AVAILABILITY = (By.XPATH, "//b[contains(text(),'Availability')]")
     LBL_CONDITION = (By.XPATH, "//b[normalize-space()='Condition:']")
     LBL_BRAND = (By.XPATH, "//b[normalize-space()='Brand:']")
-    INPUT_QUANTITY = (By.XPATH, "//input[@id='quantity']")
-    BTN_ADD_TO_CART = (By.XPATH, "//button[normalize-space()='Add to cart']")
-    LBL_REVIEW = (By.XPATH, "//a[normalize-space()='Write Your Review']")
-    INPUT_NAME = (By.XPATH, "//input[@id='name']")
-    INPUT_EMAIL_ADDRESS = (By.XPATH, "//input[@id='email']")
-    INPUT_REVIEW = (By.XPATH, "//textarea[@id='review']")
-    BTN_SUBMIT = (By.XPATH, "//button[@id='button-review']")
-    MSG_SUCCESS = (By.CSS_SELECTOR, "div[class='alert-success alert'] span")
 
-    # ---------- Visibility ----------
+    # Input & Buttons
+    INPUT_QUANTITY = (By.ID, "quantity")
+    BTN_ADD_TO_CART = (By.CSS_SELECTOR, "button.cart")
+
+    # Review Section
+    LBL_REVIEW_TITLE = (By.XPATH, "//a[normalize-space()='Write Your Review']")
+    INPUT_REVIEW_NAME = (By.ID, "name")
+    INPUT_REVIEW_EMAIL = (By.ID, "email")
+    INPUT_REVIEW_CONTENT = (By.ID, "review")
+    BTN_SUBMIT_REVIEW = (By.ID, "button-review")
+    MSG_REVIEW_SUCCESS = (By.CSS_SELECTOR, ".alert-success span")
+
+    # ---------- Visibility Checks ----------
 
     def is_product_details_page_visible(self) -> bool:
-        """
-        Verify product detail page is visible
-        """
+        """Verifies if the product details container is displayed."""
         logger.info("Verifying product detail page is visible")
-        return self.is_displayed(self.PRODUCT_INFORMATION_CONTAINER)
-
-    def is_product_name_visible(self) -> bool:
-        """
-        Verify product name is visible
-        """
-        logger.info("Verifying product name is visible")
-        return self.is_displayed(self.LBL_PRODUCT_NAME)
-
-    def is_product_category_visible(self) -> bool:
-        """
-        Verify product category is visible
-        """
-        logger.info("Verifying product category is visible")
-        return self.is_displayed(self.LBL_CATEGORY)
-
-    def is_product_price_visible(self) -> bool:
-        """
-        Verify product price is visible
-        """
-        logger.info("Verifying product price is visible")
-        return self.is_displayed(self.LBL_PRICE)
-
-    def is_product_availability_visible(self) -> bool:
-        """
-        Verify product availability is visible
-        """
-        logger.info("Verifying product availability is visible")
-        return self.is_displayed(self.LBL_AVAILABILITY)
-
-    def is_product_condition_visible(self) -> bool:
-        """
-        Verify product condition is visible
-        """
-        logger.info("Verifying product condition is visible")
-        return self.is_displayed(self.LBL_CONDITION)
-
-    def is_product_brand_visible(self) -> bool:
-        """
-        Verify product brand is visible
-        """
-        logger.info("Verifying product brand is visible")
-        return self.is_displayed(self.LBL_BRAND)
-
-    def is_review_section_visible(self) -> bool:
-        """
-        Verify review section is visible
-        """
-        logger.info("Verifying review section is visible")
-        return self.is_displayed(self.LBL_REVIEW)
-
-    # ---------- Verifications ----------
+        return self.is_displayed(self.PRODUCT_INFO_CONTAINER)
 
     def are_product_details_visible(self) -> bool:
         """
-        Verify product details are visible
+        Comprehensive check for all key product attributes.
+        Used in Test 8 and 13
         """
-        logger.info("Verifying product details are visible")
-        return all([
-            self.is_product_name_visible(),
-            self.is_product_category_visible(),
-            self.is_product_price_visible(),
-            self.is_product_availability_visible(),
-            self.is_product_condition_visible(),
-            self.is_product_brand_visible()
-        ])
+        logger.info("Checking visibility of all product detail elements")
+        elemets = [
+            self.LBL_PRODUCT_NAME, self.LBL_CATEGORY, self.LBL_PRICE,
+            self.LBL_AVAILABILITY, self.LBL_CONDITION, self.LBL_BRAND
+        ]
+        return all(self.is_displayed(loc) for loc in elemets)
 
     # ---------- Actions ----------
 
     def set_quantity(self, quantity: str) -> None:
-        """
-        Set quantity of product
-        """
-        logger.info("Setting quantity of product")
+        """Enters the desired quantity into the input field."""
+        logger.info(f"Setting product quantity to: {quantity}")
         self.send_keys(self.INPUT_QUANTITY, quantity, clear_first=True)
+
+    def click_add_to_cart(self) -> None:
+        """
+        Clicks the 'Add to cart' button.
+        Triggers the AddToCartModal component.
+        """
+        logger.info("Clicking 'Add to cart' button")
+        self.click(self.BTN_ADD_TO_CART)
+
+    def submit_product_review(self, name: str, email: str, content: str) -> None:
+        """
+        Fills out and submits the product review form.
+        """
+        logger.info(f"Submitting review for user: {email}")
+        self.send_keys(self.INPUT_REVIEW_NAME, name)
+        self.send_keys(self.INPUT_REVIEW_EMAIL, email)
+        self.send_keys(self.INPUT_REVIEW_CONTENT, content)
+        self.click(self.BTN_SUBMIT_REVIEW)
+
+    # ---------- Navigation & Combined Actions ----------
 
     def add_to_cart_and_view_cart(self):
         """
-        Add product to cart and continue shopping
+        Combined action: Adds to cart and navigates directly to Cart page via the modal component.
         """
-        logger.info("Adding product to cart and continue shopping")
-        self.click(self.BTN_ADD_TO_CART)
+        self.click_add_to_cart()
+        return self.add_to_cart_modal.click_view_cart()
+
+    def navigate_to_cart_via_modal(self):
         self.add_to_cart_modal.click_view_cart()
-
-        from pages.cart_page import CartPage
-        return CartPage(self.driver)
-
-    def enter_review_name(self, name: str) -> None:
-        """
-        Enter name of product
-        """
-        logger.info("Entering name of product")
-        self.send_keys(self.INPUT_NAME, name, clear_first=True)
-
-    def enter_review_email(self, email: str) -> None:
-        """
-        Enter email of product
-        """
-        logger.info("Entering email of product")
-        self.send_keys(self.INPUT_EMAIL_ADDRESS, email, clear_first=True)
-
-    def enter_review_content(self, review: str) -> None:
-        """
-        Enter review of product
-        """
-        logger.info("Entering review of product")
-        self.send_keys(self.INPUT_REVIEW, review, clear_first=True)
-
-    def click_submit(self) -> None:
-        """
-        Click submit button
-        """
-        logger.info("Click submit button")
-        self.click(self.BTN_SUBMIT)
+        return self.navigate.cart_page
 
     # ---------- Getters ----------
 
-    def get_success_message(self) -> str:
-        """
-        Get success message
-        """
-        logger.info("Get success message")
-        return self.get_text(self.MSG_SUCCESS)
+    def get_review_success_message(self) -> str:
+        """Retrieves the success message text after submitting a review."""
+        return self.get_text(self.MSG_REVIEW_SUCCESS)
