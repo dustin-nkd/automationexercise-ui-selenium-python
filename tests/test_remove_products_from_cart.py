@@ -1,33 +1,42 @@
 import allure
 
-from pages.guest_page import GuestPage
+from utilities.assertions import assert_true
 
 
 @allure.feature("Cart")
-def test_remove_products_from_cart(driver, config):
+@allure.story("Remove Products From Cart")
+def test_remove_products_from_cart(app, config):
+    """
+    Test Case 17: Remove Products From Cart
+    Ensures taht clicking the 'X' button removes the specific item from the cart table.
+    """
     base_url = config.get("base_url")
-    guest_page = GuestPage(driver)
-    item = "Blue Top"
+    target_item = "Blue Top"
 
-    with allure.step("Navigate to url 'https://automationexercise.com'"):
-        guest_page.navigate_to(base_url)
+    with allure.step("Launch browser and navigate to url"):
+        home_page = app.open_site(base_url)
 
     with allure.step("Verify that home page is visible successfully"):
-        assert guest_page.is_home_page_visible()
+        assert_true(home_page.header.is_header_visible(),
+                    "Home page header not visible", home_page)
 
-    with allure.step("Add products to cart"):
-        guest_page.products.add_product_to_cart_by_item(item)
-        guest_page.add_to_cart_modal.click_continue_shopping()
+    with allure.step(f"Add product '{target_item}' to cart"):
+        product_details = home_page.view_product(target_item)
+        product_details.click_add_to_cart()
+        product_details.add_to_cart_modal.click_continue_shopping()
 
     with allure.step("Click 'Cart' button"):
-        cart_page = guest_page.navigate_to_cart_page()
+        cart_page = home_page.header.click_cart()
 
     with allure.step("Verify that cart page is displayed"):
-        assert cart_page.is_cart_page_visible()
-        assert cart_page.is_cart_table_visible()
+        assert_true(cart_page.is_cart_page_visible(),
+                    "Cart page is not displayed", cart_page)
+        assert_true(cart_page.is_cart_table_visible(),
+                    "Cart table is not visible", cart_page)
 
-    with allure.step("Click 'X' button corresponding to particular product"):
-        cart_page.remove_item(item)
+    with allure.step(f"Click 'X' button corresponding to '{target_item}'"):
+        cart_page.remove_item(target_item)
 
-    with allure.step("Verify that product is removed from the cart"):
-        assert cart_page.is_item_removed(item)
+    with allure.step(f"Verify that '{target_item}' is removed from the cart"):
+        assert_true(cart_page.is_item_removed(target_item),
+                    f"Product '{target_item}' was not removed from cart", cart_page)
