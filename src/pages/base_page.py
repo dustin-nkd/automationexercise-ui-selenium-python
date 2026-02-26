@@ -202,7 +202,7 @@ class BasePage:
         """
         Waits for an element to disappear from the DOM.
         """
-        self._wait_for(EC.visibility_of_element_located(locator), timeout)
+        self._wait_for(EC.invisibility_of_element_located(locator), timeout)
 
     # ---------- JavaScript & Actions ----------
 
