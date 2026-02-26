@@ -123,7 +123,7 @@ def logged_in_user(app, config, registered_user):
     home_page = app.open_site(config["base_url"])
 
     # 2. Use Navigator to get Login Page and perform Login
-    login_page = home_page.navigate.login_page
+    login_page = home_page.header.click_signup_login()
     home_page = login_page.login(
         registered_user["email"],
         registered_user["password"]
