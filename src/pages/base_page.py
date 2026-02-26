@@ -204,6 +204,12 @@ class BasePage:
         """
         self._wait_for(EC.invisibility_of_element_located(locator), timeout)
 
+    def wait_until_present(self, locator: Locator, timeout: Optional[int] = None) -> None:
+        """
+        Waits for an element to appear from the DOM.
+        """
+        self._wait_for(EC.visibility_of_element_located(locator), timeout)
+
     # ---------- JavaScript & Actions ----------
 
     def scroll_into_view(self, locator: Locator, timeout: Optional[int] = None) -> None:
