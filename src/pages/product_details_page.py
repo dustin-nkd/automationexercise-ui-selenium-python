@@ -52,6 +52,14 @@ class ProductDetailsPage(BasePage):
         ]
         return all(self.is_displayed(loc) for loc in elemets)
 
+    def is_review_section_visible(self) -> bool:
+        """
+        Check if the 'Write Your Review' section is displayed.
+        """
+        logger.info("Verifying review section visibility")
+        self.scroll_into_view(self.LBL_REVIEW_TITLE)
+        return self.is_displayed(self.LBL_REVIEW_TITLE)
+
     # ---------- Actions ----------
 
     def set_quantity(self, quantity: str) -> None:
@@ -75,6 +83,19 @@ class ProductDetailsPage(BasePage):
         self.send_keys(self.INPUT_REVIEW_NAME, name)
         self.send_keys(self.INPUT_REVIEW_EMAIL, email)
         self.send_keys(self.INPUT_REVIEW_CONTENT, content)
+        self.click(self.BTN_SUBMIT_REVIEW)
+
+    def enter_review_name(self, name: str):
+        self.send_keys(self.INPUT_REVIEW_NAME, name)
+
+    def enter_review_email(self, email: str):
+        self.send_keys(self.INPUT_REVIEW_EMAIL, email)
+
+    def enter_review_content(self, content: str):
+        self.send_keys(self.INPUT_REVIEW_CONTENT, content)
+
+    def click_submit(self):
+        logger.info("Clicking Submit Review button")
         self.click(self.BTN_SUBMIT_REVIEW)
 
     # ---------- Navigation & Combined Actions ----------
