@@ -1,65 +1,59 @@
 import allure
 
-from pages.guest_page import GuestPage
-from utilities.assertions import assert_text_contains
+from utilities.assertions import assert_true, assert_text_contains
 from utilities.data_generator import DataGenerator
 
 
 @allure.feature("Checkout")
-def test_verify_address_details_in_checkout_page(driver, config):
+@allure.story("Verify Address Details")
+def test_verify_address_details_in_checkout_page(app, config, user_profile):
+    """
+    Test Case 23: Verify address details in checkout page
+    """
     base_url = config.get("base_url")
-    guest_page = GuestPage(driver)
-    name = DataGenerator.unique_username("user")
-    email = DataGenerator.unique_email("user")
+    username = DataGenerator.unique_username("addr")
+    email = DataGenerator.unique_email("addr")
 
-    with allure.step("Navigate to url 'https://automationexercise.com'"):
-        guest_page.navigate_to(base_url)
+    with allure.step("Launch browser and navigate to home page"):
+        hom_page = app.open_site(base_url)
 
-    with allure.step("Verify that home page is visible successfully"):
-        assert guest_page.is_home_page_visible()
+    with allure.step("Click 'Signup / Login' and create account"):
+        login_page = hom_page.header.click_signup_login()
+        login_page.enter_name(username)
+        login_page.enter_signup_email(email)
+        signup_page = login_page.click_signup()
 
-    with allure.step("Click 'Signup / Login' button"):
-        login_page = guest_page.navigate_to_signup_login_page()
-
-    with allure.step("Fill all details in Signup and create account"):
-        sign_up_page = login_page.sign_up(name, email)
-        account_created_page = sign_up_page.create_account(config["user_profile"])
-
-    with allure.step("6. Verify 'ACCOUNT CREATED!' and click 'Continue' button"):
-        actual_text = account_created_page.get_account_created_message()
-        assert_text_contains(actual_text=actual_text,
-                             expected_text="ACCOUNT CREATED!",
-                             message="ACCOUNT CREATED! is not visible",
-                             driver=driver)
+        user_profile["name"] = username
+        account_created_page = signup_page.create_account(user_profile)
         home_page = account_created_page.click_continue()
 
-    with allure.step("Verify ' Logged in as username' at top"):
-        assert home_page.is_logged_user_visible()
+    with allure.step("Verify 'Logged in as username'"):
+        assert_true(home_page.header.is_logged_user_visible(),
+                    "User not logged in", home_page)
 
-    with allure.step("Add products to cart"):
-        home_page.products.add_product_to_cart_by_item("Blue Top")
-        home_page.add_to_cart_modal.click_continue_shopping()
+    with allure.step("Add products to cart and proceed to checkout"):
+        product_details = home_page.view_product("Blue Top")
+        product_details.click_add_to_cart()
+        cart_page = product_details.navigate_to_cart_via_modal()
+        checkout_page = cart_page.proceed_to_checkout()
 
-    with allure.step("Click 'Cart' button"):
-        cart_page = guest_page.navigate_to_cart_page()
+    with allure.step("Verify Delivery Address matches registration details"):
+        delivery_address = checkout_page.get_delivery_address_details()
+        assert_text_contains(delivery_address[0], "Mr. Khanh Duy Nguyen", "Delivery Name mismatch")
+        assert_text_contains(delivery_address[2], "70, Lu Gia street, Phu Tho ward", "Delivery Address1 mismatch")
+        assert_text_contains(delivery_address[5], "Israel", "Delivery Country mismatch")
 
-    with allure.step("Verify that cart page is displayed"):
-        assert cart_page.is_cart_page_visible()
-        assert cart_page.is_cart_table_visible()
-
-    with allure.step("Click Proceed To Checkout"):
-        chekcout_page = cart_page.proceed_to_checkout()
-
-    with allure.step("Verify Address Details and Review Your Order"):
-        assert chekcout_page.is_checkout_page_valid()
+    with allure.step("Verify Billing Address matches registration details"):
+        billing_address = checkout_page.get_billing_address_details()
+        assert_text_contains(billing_address[0], "Mr. Khanh Duy Nguyen", "Billing Name mismatch")
+        assert_text_contains(billing_address[2], "70, Lu Gia street, Phu Tho ward", "Billing Address1 mismatch")
 
     with allure.step("Click 'Delete Account' button"):
-        account_deleted_page = home_page.delete_account()
+        account_deleted_page = home_page.header.click_delete_account()
 
-    with allure.step("Verify 'ACCOUNT DELETED!' and click 'Continue' button"):
-        actual_text = account_deleted_page.get_account_deleted_message()
-        assert_text_contains(actual_text=actual_text,
-                             expected_text="ACCOUNT DELETED!",
-                             message="ACCOUNT DELETED! is not visible",
-                             driver=driver)
-        account_deleted_page.click_continue()
+    with allure.step("Verify 'ACCOUNT DELETED' and click 'Continue'"):
+        assert_text_contains(actual_text=account_deleted_page.get_account_deleted_message(),
+                             expected_text="ACCOUNT DELETED",
+                             message="Account deletion flow failed",
+                             page_object=account_deleted_page)
+    account_deleted_page.click_continue()
