@@ -7,19 +7,15 @@ logger = get_logger(__name__)
 
 class ScrollUpComponent:
     """
-    Scroll up button component
+    Component for the scroll-to-top arrow button.
     """
 
-    BTN_SCROLL_UP = (By.XPATH, "//a[@id='scrollUp']")
+    BTN_SCROLL_UP = (By.ID, "scrollUp")
 
     def __init__(self, base_page):
         self.base = base_page
 
-    # ---------- Visibility ----------
-
     def click_scroll_up(self) -> None:
-        """
-        Click scroll up button
-        """
-        logger.info("Clicking scroll up button")
+        """Clicks the scroll up arrow at the bottom right."""
+        logger.info("Clicking the scroll-up arrow button")
         self.base.click(self.BTN_SCROLL_UP)

@@ -11,6 +11,8 @@ class HomePage(BasePage):
     Page Object for AutomationExcercise Home Page
     """
 
+    LBL_SLIDER_ACTIVE_TEXT = (By.XPATH, "//div[@class='item active']//h2")
+
     # ---------- Locators ----------
     def _get_view_product_btn(self, product_name: str):
         return By.XPATH, f"//div[@class='features_items']//p[text()='{product_name}']/ancestor::div[@class='product-image-wrapper']//a[text()='View Product']"
@@ -48,3 +50,6 @@ class HomePage(BasePage):
     def navigate_to_cart_via_modal(self):
         self.add_to_cart_modal.click_view_cart()
         return self.navigate.cart_page
+
+    def get_slider_text(self) -> str:
+        return self.get_text(self.LBL_SLIDER_ACTIVE_TEXT)
