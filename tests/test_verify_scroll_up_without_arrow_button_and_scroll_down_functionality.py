@@ -1,28 +1,38 @@
 import allure
 
-from pages.guest_page import GuestPage
+from utilities.assertions import assert_true, assert_text_contains
 
 
-@allure.feature("Scroll")
-def test_verify_scroll_up_without_arrow_button_and_scroll_down_functionality(driver, config):
+@allure.feature("Navigation")
+@allure.story("Manual Scroll Up and Down")
+def test_verify_scroll_up_without_arrow_button_and_scroll_down_functionality(app, config):
+    """
+    Test Case 26: Verify Scroll Up without 'Arrow' button and Scroll Down functionality
+    Verifies that manual scrolling using JavaScript or Actions works correctly.
+    """
     base_url = config.get("base_url")
-    guest_page = GuestPage(driver)
+    expected_slider_text = "Full-Fledged practice website for Automation Engineers"
 
-    with allure.step("Navigate to url 'https://automationexercise.com'"):
-        guest_page.navigate_to(base_url)
+    with allure.step("Launch browser and navigate to home page"):
+        home_page = app.open_site(base_url)
 
-    with allure.step("Verify that home page is visible successfully"):
-        assert guest_page.is_home_page_visible()
+    with allure.step("Verify taht home page is visible successfully"):
+        assert_true(home_page.header.is_header_visible(),
+                    "Home page failed to load", home_page)
 
     with allure.step("Scroll down page to bottom"):
-        pass
+        home_page.footer.scroll_to_footer()
 
-    with allure.step("Verify 'SUBSCRIPTION' is visible"):
-        assert guest_page.footer.is_subscription_visible()
+    with allure.step("Verify 'SUBSCRIPTION' label is visible"):
+        assert_true(home_page.footer.is_subscription_label_visible(),
+                    "Subscription footer not visible after scrolling down", home_page)
 
-    with allure.step("Scroll up page to top"):
-        guest_page.header.scroll_up()
+    with allure.step("Scroll up page to top manually"):
+        home_page.header.scroll_up()
 
-    with allure.step(
-            "Verify that page is scrolled up and 'Full-Fledged practice website for Automation Engineers' text is visible on screen"):
-        assert guest_page.is_label_slider_visible()
+    with allure.step("Verify that page is scrolled up and slider text is visible"):
+        actual_text = home_page.get_slider_text()
+        assert_text_contains(actual_text=actual_text,
+                             expected_text=expected_slider_text,
+                             message="Page did not scroll up manually to the slide section",
+                             page_object=home_page)
