@@ -44,3 +44,7 @@ class HomePage(BasePage):
         logger.info("Logging out via header")
         self.header.click_logout()
         return self.navigate.login_page
+
+    def navigate_to_cart_via_modal(self):
+        self.add_to_cart_modal.click_view_cart()
+        return self.navigate.cart_page
