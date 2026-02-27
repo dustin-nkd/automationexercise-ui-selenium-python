@@ -27,11 +27,19 @@ class CategorySidebarComponent:
         # Finds the sub-category link (Dress, Tops, Jeans, etc.)
         return By.XPATH, f"//div[@id='accordian']//a[normalize-space()='{name}']"
 
+    def _get_brand_locator(self, brand_name: str):
+        # Finds the brand name
+        return By.XPATH, f"//div[@class='brands-name']//a[contains(.,'{brand_name}')]"
+
     # ---------- Visibility ----------
 
     def is_sidebar_visible(self) -> bool:
         logger.info("Checking if category sidebar is visible")
         return self.base.is_displayed(self.SIDEBAR_CONTAINER)
+
+    def is_brands_list_visible(self) -> bool:
+        logger.info("Checking if brands list is visible in sidebar")
+        return self.base.is_displayed(self.BRANDS_CONTAINER)
 
     # ---------- Actions ----------
 
@@ -46,6 +54,13 @@ class CategorySidebarComponent:
         """Clicks on a sub-category link."""
         logger.info(f"Clicking sub-category: {sub_category_name}")
         locator = self._get_sub_category_locator(sub_category_name)
+        self.base.click(locator)
+
+    def click_brand(self, brand_name: str) -> None:
+        """Clicks on the brand link."""
+        logger.info(f"Clicking brand: {brand_name}")
+        locator = self._get_brand_locator(brand_name)
+        self.base.scroll_into_view(locator)
         self.base.click(locator)
 
     # ---------- Getters ----------
