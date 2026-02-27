@@ -111,4 +111,4 @@ class GuestPage(BasePage):
         Add product to cart by item from home
         """
         logger.info("Add product to cart by item from home")
-        self.products.add_product_to_cart_by_item(name)
+        self.products.add_product_to_cart(name)

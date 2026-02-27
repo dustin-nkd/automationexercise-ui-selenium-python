@@ -7,72 +7,73 @@ logger = get_logger(__name__)
 
 class HomeProductsComponent:
     """
-    Reusable Product component shared across pages
+    Reusable Product component representing the product lists and recommened carousel.
     """
+
+    LBL_RECOMMENDED_TITLE = (By.XPATH, "//h2[normalize-space()='recommended items']")
+    PRODUCT_CARDS = (By.CLASS_NAME, "product-image-wrapper")
+    RECOMMENDED_ITEMS_SECTION = (By.CSS_SELECTOR, ".recommended_items")
 
     def __init__(self, base_page):
         self.base = base_page
 
-    LBL_RECOMMENDED_ITEMS = (By.XPATH, "//h2[normalize-space()='recommended items']")
-
     # ---------- Dynamic Locators ----------
 
-    def _product(self, name: str):
-        return (
-            By.XPATH,
-            f"//p[normalize-space()='{name}']/parent::div[contains(@class,'productinfo')]"
-        )
+    def _get_product_container(self, name: str):
+        # Locator for the whole product card to hover
+        return By.XPATH, f"//div[@class='single-products'][.//p[normalize-space()='{name}']]"
 
-    def _btn_view_product(self, name: str):
-        return (
-            By.XPATH,
-            f"//div[contains(@class,'product-image-wrapper')]"
-            f"[.//p[normalize-space()='{name}']]"
-            f"//a[normalize-space()='View Product']"
-        )
+    def _get_view_product_btn(self, name: str):
+        # Locator for 'View Product' link based on name
+        return f"//div[@class='product-image-wrapper'][.//p[normalize-space()='{name}']]//a[contains(text(),'View Product')]"
 
-    def _btn_add_to_cart_by_item(self, item: str):
-        return (
-            By.XPATH,
-            f"//p[normalize-space()='{item}']/parent::div[@class='overlay-content']//a[contains(@class,'add-to-cart')]"
-        )
+    def _get_add_to_cart_overlay_btn(self, name: str):
+        # Locator for 'Add to cart' inside the hover overlay
+        return f"//div[@class='overlay-content'][.//p[normalize-space()='{name}']]//a[contains(@class,'add-to-cart')]"
 
-    def _btn_add_to_cart_recommended_item(self, name: str):
-        return (
-            By.XPATH,
-            f"//div[@class='recommended_items']//div[@class='single-products']//p[contains(text(),'{name}')]/following-sibling::a[contains(.,'Add to cart')]"
-        )
+    def _get_recommended_add_btn(self, name: str):
+        # Locator for 'Add to cart' in the Recommended Carousel section
+        return By.XPATH, f"//div[@id='recommended-item-carousel']//p[text()='{name}']/following-sibling::a"
+
+    # ---------- Visibility ----------
+
+    def is_recommended_itemes_visible(self) -> bool:
+        """Verifies if the 'recommended items' section title is displayed."""
+        logger.info("Verifying recommended items visibility")
+        return self.base.is_displayed(self.LBL_RECOMMENDED_TITLE)
 
     # ---------- Actions ----------
 
     def click_view_product_of(self, name: str):
         """
-        Click view product of item
+        Clicks on 'View Product' and returns ProductDetailsPage instance.
         """
-        logger.info("Clicking view product of item")
-        self.base.scroll_into_view(self._btn_view_product(name))
-        self.base.click(self._btn_view_product(name))
+        logger.info(f"Navigating to details for product: {name}")
+        locator = self._get_view_product_btn(name)
+        self.base.scroll_into_view(locator)
+        self.base.click(locator)
 
-    def add_product_to_cart_by_item(self, item: str) -> None:
+    def add_product_to_cart(self, name: str) -> None:
         """
-        Hover over product and click Add to cart
+        Standard product add: Scrolled -> Hover -> Click 'Add to cart' in overlay.
         """
-        logger.info("Adding product %s to cart", item)
-        self.base.scroll_into_view(self._product(item))
-        self.base.hover(self._product(item))
-        self.base.click(self._btn_add_to_cart_by_item(item))
+        logger.info(f"Adding standard product to cart: {name}")
+        container = self._get_product_container(name)
+        add_btn = self._get_add_to_cart_overlay_btn(name)
 
-    def add_recommended_item_to_cart(self, item: str) -> None:
-        """
-        Scroll to item and click Add to cart
-        """
-        logger.info("Scrolling to item %s", item)
-        self.base.scroll_into_view(self._btn_add_to_cart_recommended_item(item))
-        self.base.click(self._btn_add_to_cart_recommended_item(item))
+        self.base.scroll_into_view(container)
+        self.base.hover(container)
+        self.base.click(add_btn)
 
-    def is_recommened_itemes_visible(self) -> bool:
+    def add_recommended_item_to_cart(self, name: str) -> None:
         """
-        Verify if recommended items are visible
+        Adds item from the Recommended carousel section.
         """
-        logger.info("Verifying if recommended items are visible")
-        return self.base.is_displayed(self.LBL_RECOMMENDED_ITEMS)
+        logger.info(f"Adding recommended product to cart: {name}")
+        locator = self._get_recommended_add_btn(name)
+        self.scroll_to_recommended_item()
+        self.base.click(locator)
+
+    def scroll_to_recommended_item(self) -> None:
+        logger.info("Scrolling to Recommended Items section")
+        self.base.scroll_into_view(self.RECOMMENDED_ITEMS_SECTION)
