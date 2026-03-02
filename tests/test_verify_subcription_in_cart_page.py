@@ -12,7 +12,7 @@ def test_verify_subscription_in_cart_page(app, config):
     Ensures that the subscription feature works correctly when accessed from the Cart page.
     """
     base_url = config.get("base_url")
-    email = DataGenerator.unique_email("cart_subscribe")
+    email = DataGenerator.unique_email("subscribe")
 
     with allure.step("Launch browser and navigate to home page"):
         home_page = app.open_site(base_url)
@@ -34,7 +34,7 @@ def test_verify_subscription_in_cart_page(app, config):
                     "'SUBSCRIPTION' label not found on Cart page footer", cart_page)
 
     with allure.step("Enter email address and click subscribe button"):
-        cart_page.footer.subscribe("email")
+        cart_page.footer.subscribe(email)
 
     with allure.step("Verify success message 'You have been successfully subscribed!' is visible"):
         actual_msg = cart_page.footer.get_success_message_text()

@@ -64,9 +64,7 @@ class LoginPage(BasePage):
         """
         logger.info("Clicking signup button")
         self.click(self.BTN_SIGNUP)
-
-        from pages.signup_page import SignUpPage
-        return SignUpPage(self.driver)
+        return self.navigate.signup_page
 
     # ---------- Login Getters ----------
 
@@ -106,9 +104,7 @@ class LoginPage(BasePage):
         """
         logger.info("Clicking login button")
         self.click(self.BTN_LOGIN)
-
-        from pages.home_page import HomePage
-        return HomePage(self.driver)
+        return self.navigate.home_page
 
     # ---------- Actions ----------
 
@@ -120,9 +116,7 @@ class LoginPage(BasePage):
         self.enter_name(name)
         self.enter_signup_email(email)
         self.click_signup()
-
-        from pages.signup_page import SignUpPage
-        return SignUpPage(self.driver)
+        return self.navigate.signup_page
 
     def login(self, email: str, password: str):
         """
@@ -132,6 +126,4 @@ class LoginPage(BasePage):
         self.enter_login_email(email)
         self.enter_password(password)
         self.click_login()
-
-        from pages.home_page import HomePage
-        return HomePage(self.driver)
+        return self.navigate.home_page

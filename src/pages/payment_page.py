@@ -49,9 +49,7 @@ class PaymentPage(BasePage):
         """
         logger.info("Clicking Pay and Confirm Order")
         self.click(self.BTN_PAY_CONFIRM)
-
-        from pages.order_placed_page import OrderPlacedPage
-        return OrderPlacedPage(self.driver)
+        return self.navigate.order_placed_page
 
     # ---------- Getters ----------
 
