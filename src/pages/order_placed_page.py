@@ -43,9 +43,7 @@ class OrderPlacedPage(BasePage):
         """
         logger.info("Click continue button")
         self.click(self.BTN_CONTINUE)
-
-        from pages.home_page import HomePage
-        return HomePage(self.driver)
+        return self.navigate.home_page
 
     def download_invoice(self):
         """

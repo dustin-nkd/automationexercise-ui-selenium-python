@@ -32,6 +32,4 @@ class AccountCreatedPage(BasePage):
         """
         logger.info("Clicking continue")
         self.click(self.BTN_CONTINUE)
-
-        from pages.home_page import HomePage
-        return HomePage(self.driver)
+        return self.navigate.home_page

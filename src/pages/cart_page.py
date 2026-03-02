@@ -149,9 +149,7 @@ class CartPage(BasePage):
         """
         logger.info("Proceed to checkout")
         self.click(self.BTN_CHECKOUT)
-
-        from pages.checkout_page import CheckoutPage
-        return CheckoutPage(self.driver)
+        return self.navigate.checkout_page
 
     def click_register_login(self):
         """
@@ -159,9 +157,7 @@ class CartPage(BasePage):
         """
         logger.info("Click register login")
         self.click(self.BTN_REGISTER_LOGIN)
-
-        from pages.login_page import LoginPage
-        return LoginPage(self.driver)
+        return self.navigate.login_page
 
     def remove_item(self, name: str) -> None:
         """
