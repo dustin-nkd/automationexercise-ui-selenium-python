@@ -86,7 +86,7 @@ class BasePage:
 
     def find(self, locator: Locator, timeout: Optional[int] = None) -> WebElement:
         """
-        Finds an elements present in the DOM.
+        Finds an element present in the DOM.
         """
         by, value = locator
         return self._wait_for(EC.presence_of_element_located((by, value)), timeout)
@@ -214,7 +214,7 @@ class BasePage:
 
     def scroll_into_view(self, locator: Locator, timeout: Optional[int] = None) -> None:
         """
-        Scrolls the element in to the center of the viewport using JS.
+        Scrolls the element into the center of the viewport using JS.
         """
         elem = self.find(locator, timeout)
         self.driver.execute_script("arguments[0].scrollIntoView({block:'center', inline:'center'});", elem)
@@ -237,7 +237,7 @@ class BasePage:
 
     def upload_file(self, locator: Locator, file_path: str) -> None:
         """
-        Uploads a file to an input[type=filep]
+        Uploads a file to an input[type=file]
         """
         absolute_path = str(Path(file_path).resolve())
         self.send_keys(locator, absolute_path)
@@ -258,7 +258,7 @@ class BasePage:
 
     def dismiss_alert(self, timeout: Optional[int] = None) -> None:
         """
-        Dismissess the current browser alert.
+        Dismisses the current browser alert.
         """
         self.wait_for_alert().dismiss()
 

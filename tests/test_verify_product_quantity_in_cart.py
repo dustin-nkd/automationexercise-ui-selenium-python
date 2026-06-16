@@ -7,7 +7,7 @@ from utilities.assertions import assert_true, assert_equal
 @allure.story("Product Quantity Validation")
 def test_verify_product_quantity_in_cart(app, config):
     """
-    Test Case 13: Verify Product quantiy in Cart
+    Test Case 13: Verify Product quantity in Cart
     Ensures that the selected quantity on the details page matches the quantity in the cart.
     """
     base_url = config.get("base_url")
@@ -43,4 +43,4 @@ def test_verify_product_quantity_in_cart(app, config):
     with allure.step("Verify that product is displayed in cart page with exact quantity"):
         actual_quantity = cart_page.get_quantity_of_item(target_product)
         assert_equal(actual_quantity, target_quantity,
-                     f"Quantiy mismatch for {target_product}", cart_page)
+                     f"Quantity mismatch for {target_product}", cart_page)

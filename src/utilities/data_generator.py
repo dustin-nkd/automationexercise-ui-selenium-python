@@ -25,12 +25,12 @@ class DataGenerator:
         Generates a unique username using high-resolution timestamp.
         Example: user_1708456789
         """
-        # Use time.time_ns() for nanasecond precision to avoid collisions in parallel runs
+        # Use time.time_ns() for nanosecond precision to avoid collisions in parallel runs
         timestamp = str(time.time_ns())[-10:]
         return f"{prefix}_{timestamp}"
 
     @staticmethod
-    def unique_email(domain: str = "example.com", prefix: str = "test") -> str:
+    def unique_email(prefix: str = "test", domain: str = "example.com") -> str:
         """
         Generates a unique email address.
         Example: test_20240520_143005_abcd@example.com

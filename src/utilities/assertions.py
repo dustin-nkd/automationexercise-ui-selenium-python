@@ -9,8 +9,8 @@ def _attach_failure_details(actual: Any, expected: Any, page_object: Optional[An
     """
     # 1. Attach comparison text
     allure.attach(
-        f"EXPECTD:\n{expected}\n\nACTUAL:\n{actual}",
-        name="comparision_details",
+        f"EXPECTED:\n{expected}\n\nACTUAL:\n{actual}",
+        name="comparison_details",
         attachment_type=allure.attachment_type.TEXT
     )
 
@@ -50,5 +50,5 @@ def assert_equal(actual: Any, expected: Any, message: str, page_object: Optional
     Assert that two values are equal.
     """
     if actual != expected:
-        _attach_failure_details(actual=acutal, expected=expected, page_object=page_object)
+        _attach_failure_details(actual=actual, expected=expected, page_object=page_object)
         raise AssertionError(message)

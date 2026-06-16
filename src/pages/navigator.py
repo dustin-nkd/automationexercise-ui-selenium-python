@@ -16,13 +16,13 @@ from pages.test_cases_page import TestCasesPage
 
 
 # Import all Page Objects here
-# Since Navigator is independent, these imports won't casue circular dependencies
+# Since Navigator is independent, these imports won't cause circular dependencies
 
 
 class Navigator:
     """
     Centralized place to initialize and access all Page Objects
-    Act as an Application Controller to manage the flow of the entire system.
+    Acts as an Application Controller to manage the flow of the entire system.
     """
 
     def __init__(self, driver: WebDriver):

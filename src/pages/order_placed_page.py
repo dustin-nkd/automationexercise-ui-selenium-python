@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 
 class OrderPlacedPage(BasePage):
     """
-    Page Object for AutomationExcercise Order Placed Page
+    Page Object for AutomationExercise Order Placed Page
     URL: https://automationpractice.com/payment_done/0
     """
 

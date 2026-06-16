@@ -31,9 +31,9 @@ class FooterComponent:
 
     def is_success_message_visible(self) -> bool:
         """
-        Checks ifthe subscription success message is displayed.
+        Checks if the subscription success message is displayed.
         """
-        logger.info("Verifying subcription success message visibility")
+        logger.info("Verifying subscription success message visibility")
         return self.base.is_displayed(self.LBL_SUCCESS_MSG)
 
     def get_success_message_text(self) -> str:

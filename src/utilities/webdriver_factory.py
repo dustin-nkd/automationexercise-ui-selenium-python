@@ -24,7 +24,7 @@ class WebDriverFactory:
     def __init__(self, config: Dict[str, Any], download_dir: str | None = None) -> None:
         self.config = config
         self.download_dir = download_dir
-        logger.info("WebDriverFactory initalized for browser: %s", config.get("browser"))
+        logger.info("WebDriverFactory initialized for browser: %s", config.get("browser"))
 
     def get_driver(self) -> webdriver.Remote:
         """Initializes the WebDriver based on local or remote configuration."""

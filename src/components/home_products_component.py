@@ -7,7 +7,7 @@ logger = get_logger(__name__)
 
 class HomeProductsComponent:
     """
-    Reusable Product component representing the product lists and recommened carousel.
+    Reusable Product component representing the product lists and recommended carousel.
     """
 
     LBL_RECOMMENDED_TITLE = (By.XPATH, "//h2[normalize-space()='recommended items']")
@@ -37,7 +37,7 @@ class HomeProductsComponent:
 
     # ---------- Visibility ----------
 
-    def is_recommended_itemes_visible(self) -> bool:
+    def is_recommended_items_visible(self) -> bool:
         """Verifies if the 'recommended items' section title is displayed."""
         logger.info("Verifying recommended items visibility")
         return self.base.is_displayed(self.LBL_RECOMMENDED_TITLE)

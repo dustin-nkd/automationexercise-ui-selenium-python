@@ -9,7 +9,7 @@ logger = get_logger(__name__)
 
 class ContactUsPage(BasePage):
     """
-    Page Object for Automation Excercise Contact Us Page.
+    Page Object for Automation Exercise Contact Us Page.
     URL: https://automationexercise.com/contact_us
     """
 

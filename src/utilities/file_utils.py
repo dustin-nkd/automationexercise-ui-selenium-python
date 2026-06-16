@@ -14,7 +14,7 @@ def wait_for_file_download(
         timeout: int = 15
 ) -> Optional[str]:
     """
-    Waits for a file t appear in the directory and ensures it's fully downloaded.
+    Waits for a file to appear in the directory and ensures it's fully downloaded.
 
     :param directory: The path to the download folder.
     :param filename_contains: Part of the filename to search for.

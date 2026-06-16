@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 
 class AccountDeletedPage(BasePage):
     """
-    Page Object for AutomationExcercise Account Deleted Page
+    Page Object for AutomationExercise Account Deleted Page
     URL: https://automationpractice.com/delete_account
     """
 

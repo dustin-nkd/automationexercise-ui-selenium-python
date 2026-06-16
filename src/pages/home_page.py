@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 
 class HomePage(BasePage):
     """
-    Page Object for AutomationExcercise Home Page
+    Page Object for AutomationExercise Home Page
     """
 
     LBL_SLIDER_ACTIVE_TEXT = (By.XPATH, "//div[@class='item active']//h2")

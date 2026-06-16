@@ -18,7 +18,7 @@ def test_add_to_cart_from_recommended_items(app, config):
 
     with allure.step("Scroll to bottom of page and verify 'RECOMMENDED ITEMS' visibility"):
         home_page.products.scroll_to_recommended_item()
-        assert_true(home_page.products.is_recommended_itemes_visible(),
+        assert_true(home_page.products.is_recommended_items_visible(),
                     "'RECOMMENDED ITEMS' section is not visible", home_page)
 
     with allure.step(f"Add recommended product '{target_item}' to cart"):

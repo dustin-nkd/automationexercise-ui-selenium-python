@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 
 class TestCasesPage(BasePage):
     """
-    Page Object for AutomationExcercise Test Cases Page
+    Page Object for AutomationExercise Test Cases Page
     URL: https://automationpractice.com/test_cases
     """
 

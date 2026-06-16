@@ -8,8 +8,8 @@ logger = get_logger(__name__)
 
 class ProductsPage(BasePage):
     """
-    Page Object for AutomationExcercise Products Page.
-    Handles product litsting, searching, and adding products to cart.
+    Page Object for AutomationExercise Products Page.
+    Handles product listing, searching, and adding products to cart.
     URL: https://automationpractice.com/products
     """
 
