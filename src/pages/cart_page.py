@@ -8,18 +8,24 @@ logger = get_logger(__name__)
 
 class CartPage(BasePage):
     """
-    Page Object for AutomationExcercise Cart Page
+    Page Object for AutomationExercise Cart Page
     URL: https://automationpractice.com/view_cart
     """
 
     ROW_CART_ITEMS = (By.CSS_SELECTOR, "td.cart_product")
-    PRICE_BY_INDEX = lambda self, i: (By.XPATH, f"(//td[@class='cart_price'])[{i}]")
-    QUANTITY_BY_INDEX = lambda self, i: (By.XPATH, f"(//td[@class='cart_quantity']/button)[{i}]")
-    TOTAL_BY_INDEX = lambda self, i: (By.XPATH, f"(//td[@class='cart_total'])[{i}]")
     LBL_CART_TITLE = (By.XPATH, "//li[@class='active' and normalize-space()='Shopping Cart']")
     TABLE_CART = (By.ID, "cart_info_table")
     BTN_CHECKOUT = (By.XPATH, "//a[normalize-space()='Proceed To Checkout']")
     BTN_REGISTER_LOGIN = (By.XPATH, "//u[normalize-space()='Register / Login']")
+
+    def PRICE_BY_INDEX(self, i: int):
+        return By.XPATH, f"(//td[@class='cart_price'])[{i}]"
+
+    def QUANTITY_BY_INDEX(self, i: int):
+        return By.XPATH, f"(//td[@class='cart_quantity']/button)[{i}]"
+
+    def TOTAL_BY_INDEX(self, i: int):
+        return By.XPATH, f"(//td[@class='cart_total'])[{i}]"
 
     def _parse_price(self, text: str) -> int:
         return int(text.replace("Rs.", "").strip())

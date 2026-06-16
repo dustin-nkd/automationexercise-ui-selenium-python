@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 
 class SignUpPage(BasePage):
     """
-    Page Object for AutomationExcercise Sign Up Information Page.
+    Page Object for AutomationExercise Sign Up Information Page.
     Handles the detailed registration form.
     """
 

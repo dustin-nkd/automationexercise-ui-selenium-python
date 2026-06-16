@@ -16,7 +16,7 @@ def test_verify_scroll_up_without_arrow_button_and_scroll_down_functionality(app
     with allure.step("Launch browser and navigate to home page"):
         home_page = app.open_site(base_url)
 
-    with allure.step("Verify taht home page is visible successfully"):
+    with allure.step("Verify that home page is visible successfully"):
         assert_true(home_page.header.is_header_visible(),
                     "Home page failed to load", home_page)
 

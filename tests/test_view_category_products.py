@@ -23,7 +23,7 @@ def test_view_category_products(app, config):
         home_page.category_sidebar.expand_category("Women")
         home_page.category_sidebar.click_sub_category("Dress")
 
-    with allure.step("Verify taht category page is displayed and confirms 'WOMEN - DRESS PRODUCT'"):
+    with allure.step("Verify that category page is displayed and confirms 'WOMEN - DRESS PRODUCT'"):
         actual_text = home_page.category_sidebar.get_category_title()
         assert_text_contains(actual_text=actual_text,
                              expected_text="WOMEN - DRESS PRODUCT",

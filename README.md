@@ -81,7 +81,7 @@ Enterprise-grade UI automation framework built with **Python, Selenium, Pytest, 
 │   ├── test_verify_all_products_and_product_detail_page.py
 │   ├── test_search_product.py
 │   ├── test_verify_subscription_in_home_page.py
-│   ├── test_verify_subcription_in_cart_page.py
+│   ├── test_verify_subscription_in_cart_page.py
 │   ├── test_add_products_in_cart.py
 │   ├── test_verify_product_quantity_in_cart.py
 │   ├── test_place_order_register_while_checkout.py

@@ -6,7 +6,7 @@ from pathlib import Path
 # --- Color Codes for Console ---
 class LogColors:
     RESET = "\033[0m"
-    DEBUB = "\033[36m"  # Cyan
+    DEBUG = "\033[36m"  # Cyan
     INFO = "\033[32m"  # Green
     WARNING = "\033[33m"  # Yellow
     ERROR = "\033[31m"  # Red
@@ -16,7 +16,7 @@ class LogColors:
 class ColoredFormatter(logging.Formatter):
     """Custom formatter to add colors to console logs."""
     COLORS = {
-        logging.DEBUG: LogColors.DEBUB,
+        logging.DEBUG: LogColors.DEBUG,
         logging.INFO: LogColors.INFO,
         logging.WARNING: LogColors.WARNING,
         logging.ERROR: LogColors.ERROR,
@@ -31,7 +31,7 @@ class ColoredFormatter(logging.Formatter):
 
 def get_logger(name: str = None) -> logging.Logger:
     """
-    Initialize and return a colorized and rotating looger.
+    Initialize and return a colorized and rotating logger.
     """
     LOG_DIR = Path("logs")
     LOG_FILE = LOG_DIR / "test_run.log"
@@ -64,7 +64,7 @@ def get_logger(name: str = None) -> logging.Logger:
         encoding="utf-8"
     )
     file_handler.setLevel(logging.DEBUG)
-    file_handler.setFormatter(ColoredFormatter(fmt=log_fmt, datefmt=date_fmt))
+    file_handler.setFormatter(logging.Formatter(fmt=log_fmt, datefmt=date_fmt))
 
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)

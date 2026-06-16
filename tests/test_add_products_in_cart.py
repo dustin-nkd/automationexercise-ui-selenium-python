@@ -17,7 +17,7 @@ def test_add_products_in_cart(app, config):
     with allure.step("Launch browser and navigate to home page"):
         home_page = app.open_site(base_url)
 
-    with allure.step("Verify taht home page is visible successfully"):
+    with allure.step("Verify that home page is visible successfully"):
         assert_true(home_page.header.is_header_visible(),
                     "Home page failed to load", home_page)
 

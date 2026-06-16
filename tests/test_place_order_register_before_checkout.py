@@ -19,7 +19,7 @@ def test_place_order_register_before_checkout(app, config, user_profile):
     with allure.step("Launch browser and navigate to home page"):
         home_page = app.open_site(base_url)
 
-    with allure.step("Verify taht home page is visible successfully"):
+    with allure.step("Verify that home page is visible successfully"):
         assert_true(home_page.header.is_header_visible(),
                     "Home page header is not visible", home_page)
 
@@ -31,7 +31,7 @@ def test_place_order_register_before_checkout(app, config, user_profile):
         login_page.enter_signup_email(email)
         signup_page = login_page.click_signup()
 
-        user_profile["name"] = user_profile
+        user_profile["name"] = username
         account_created_page = signup_page.create_account(user_profile)
 
     with allure.step("Verify 'ACCOUNT CREATED' and click 'Continue' button"):
@@ -50,7 +50,7 @@ def test_place_order_register_before_checkout(app, config, user_profile):
         product_details.click_add_to_cart()
         cart_page = product_details.navigate_to_cart_via_modal()
 
-    with allure.step("Verify taht cart page is displayed"):
+    with allure.step("Verify that cart page is displayed"):
         assert_true(cart_page.is_cart_page_visible(),
                     "Cart page not visible", cart_page)
 

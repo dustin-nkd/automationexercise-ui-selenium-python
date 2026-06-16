@@ -7,7 +7,7 @@ from utilities.assertions import assert_true
 @allure.story("Verify Product Catalog and Details")
 def test_verify_all_products_and_product_detail_page(app, config):
     """
-    Test Case 8: Verify ALl Products and prodct detail page
+    Test Case 8: Verify All Products and product detail page
     Ensures that the product list is displayed and individual product details are accurate.
     """
     base_url = config.get("base_url")
@@ -32,7 +32,7 @@ def test_verify_all_products_and_product_detail_page(app, config):
                     "Product list container is not displayed", products_page)
 
     with allure.step("Click on 'View Product' of a specific product"):
-        # We target the firts product dynamically instead of hardcoding a name
+        # We target the first product dynamically instead of hardcoding a name
         target_product = "Blue Top"
         product_details_page = products_page.click_view_product_of(target_product)
 

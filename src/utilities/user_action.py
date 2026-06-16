@@ -22,9 +22,9 @@ def register_user(app, base_url, user_profile):
     email = DataGenerator.unique_email("reg")
     password = user_profile["password"]
 
-    logger.info(f"Registerting user with email: {email}")
+    logger.info(f"Registering user with email: {email}")
 
-    # 4. Initial Sigup
+    # 4. Initial Signup
     login_page.enter_name(username)
     login_page.enter_signup_email(email)
     signup_page = login_page.click_signup()

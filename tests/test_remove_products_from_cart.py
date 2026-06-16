@@ -8,7 +8,7 @@ from utilities.assertions import assert_true
 def test_remove_products_from_cart(app, config):
     """
     Test Case 17: Remove Products From Cart
-    Ensures taht clicking the 'X' button removes the specific item from the cart table.
+    Ensures that clicking the 'X' button removes the specific item from the cart table.
     """
     base_url = config.get("base_url")
     target_item = "Blue Top"

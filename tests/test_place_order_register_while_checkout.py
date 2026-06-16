@@ -19,7 +19,7 @@ def test_place_order_register_while_checkout(app, config, user_profile):
     with allure.step("Launch browser and navigate to home page"):
         home_page = app.open_site(base_url)
 
-    with allure.step("Verify that home page os visible successfully"):
+    with allure.step("Verify that home page is visible successfully"):
         assert_true(home_page.header.is_header_visible(),
                     "Home page header is not visible", home_page)
 
@@ -69,7 +69,7 @@ def test_place_order_register_while_checkout(app, config, user_profile):
         checkout_page.enter_description("Automated E2E Order")
         payment_page = checkout_page.place_order()
 
-    with allure.step("Etner payment details and confirm order"):
+    with allure.step("Enter payment details and confirm order"):
         payment_page.enter_payment_details(
             name_on_card="Dustin SDET",
             card_number="424242424242424242",
@@ -86,11 +86,11 @@ def test_place_order_register_while_checkout(app, config, user_profile):
                              page_object=order_placed_page)
 
     with allure.step("Click 'Delete Account' button"):
-        accout_deleted_page = home_page.header.click_delete_account()
+        account_deleted_page = home_page.header.click_delete_account()
 
     with allure.step("Verify 'ACCOUNT DELETED'! and click 'Continue'"):
-        assert_text_contains(actual_text=accout_deleted_page.get_account_deleted_message(),
+        assert_text_contains(actual_text=account_deleted_page.get_account_deleted_message(),
                              expected_text="ACCOUNT DELETED!",
                              message="Account deletion failed",
-                             page_object=accout_deleted_page)
-        accout_deleted_page.click_continue()
+                             page_object=account_deleted_page)
+        account_deleted_page.click_continue()

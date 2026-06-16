@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 
 class ProductDetailsPage(BasePage):
     """
-    Page Object for AutomationExcercise Product Detail Page
+    Page Object for AutomationExercise Product Detail Page
     Handles detailed product information and review submission.
     """
 
@@ -46,11 +46,11 @@ class ProductDetailsPage(BasePage):
         Used in Test 8 and 13
         """
         logger.info("Checking visibility of all product detail elements")
-        elemets = [
+        elements = [
             self.LBL_PRODUCT_NAME, self.LBL_CATEGORY, self.LBL_PRICE,
             self.LBL_AVAILABILITY, self.LBL_CONDITION, self.LBL_BRAND
         ]
-        return all(self.is_displayed(loc) for loc in elemets)
+        return all(self.is_displayed(loc) for loc in elements)
 
     def is_review_section_visible(self) -> bool:
         """

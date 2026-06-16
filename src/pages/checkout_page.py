@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 
 class CheckoutPage(BasePage):
     """
-    Page Object for AutomationExcercise Checkout Page.
+    Page Object for AutomationExercise Checkout Page.
     Handles address verification and order review before payment.
     """
 
